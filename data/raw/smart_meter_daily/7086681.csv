@@ -1,0 +1,6 @@
+Household_ID;Group;AffectsTimePoint;Timestamp;kWh_received_Total;kWh_received_HeatPump;kWh_received_Other;kWh_returned_Total;kvarh_received_capacitive_Total;kvarh_received_capacitive_HeatPump;kvarh_received_capacitive_Other;kvarh_received_inductive_Total;kvarh_received_inductive_HeatPump;kvarh_received_inductive_Other
+7086681;treatment;before visit;2020-04-28 23:59:59+00:00;22.2;;;;6.45;;;4.37;;
+7086681;treatment;before visit;2020-04-29 23:59:59+00:00;24.98;;;;6.17;;;5.59;;
+7086681;treatment;before visit;2020-04-30 23:59:59+00:00;23.14;;;;6.28;;;4.43;;
+7086681;treatment;before visit;2020-05-01 23:59:59+00:00;25.4;;;;5.89;;;5.62;;
+7086681;treatment;before visit;2020-05-02 23:59:59+00:00;29.4;;;;5.79;;;8.3;;

@@ -1,0 +1,316 @@
+{
+  "target": "gross_load",
+  "keys": [
+    "Household_ID",
+    "date"
+  ],
+  "split_column": "split",
+  "preselection": {
+    "target": "gross_load",
+    "keys": [
+      "Household_ID",
+      "date"
+    ],
+    "features": [
+      "dow",
+      "month",
+      "season",
+      "is_weekend",
+      "is_holiday",
+      "Temperature_avg_hourly_mean",
+      "Temperature_avg_hourly_min",
+      "Temperature_avg_hourly_max",
+      "Humidity_avg_hourly_mean",
+      "WindSpeed_hourly_mean",
+      "DewPoint_hourly_mean",
+      "Precipitation_total_hourly_sum",
+      "Sunshine_duration_hourly_sum",
+      "hdd_15",
+      "recv_lag1",
+      "recv_lag7",
+      "recv_roll7_mean",
+      "recv_roll7_std",
+      "is_post_visit",
+      "Installation_HasPVSystem",
+      "weather_id"
+    ],
+    "n_features": 21,
+    "renamed": {
+      "kWh_received_Total": "gross_load",
+      "Weather_ID": "weather_id"
+    },
+    "categorical": [
+      "weather_id",
+      "season"
+    ],
+    "excluded": [
+      "gross_load",
+      "is_gap",
+      "is_modelable",
+      "kWh_received_HeatPump",
+      "kWh_received_Other",
+      "kWh_received_Total",
+      "kWh_returned_Total",
+      "kWh_spike_flag",
+      "kvarh_received_capacitive_HeatPump",
+      "kvarh_received_capacitive_Other",
+      "kvarh_received_capacitive_Total",
+      "kvarh_received_inductive_HeatPump",
+      "kvarh_received_inductive_Other",
+      "kvarh_received_inductive_Total",
+      "returned_was_substituted",
+      "split"
+    ],
+    "statistics_computed_on": "train and is_modelable (65,502 rows) - the test window must not influence the model specification",
+    "coverage_train": {
+      "dow": 1.0,
+      "month": 1.0,
+      "season": 1.0,
+      "is_weekend": 1.0,
+      "is_holiday": 1.0,
+      "Temperature_avg_hourly_mean": 0.999267,
+      "Temperature_avg_hourly_min": 0.999267,
+      "Temperature_avg_hourly_max": 0.999267,
+      "Humidity_avg_hourly_mean": 0.999206,
+      "WindSpeed_hourly_mean": 0.99713,
+      "DewPoint_hourly_mean": 0.999206,
+      "Precipitation_total_hourly_sum": 0.99745,
+      "Sunshine_duration_hourly_sum": 0.908308,
+      "hdd_15": 0.999267,
+      "recv_lag1": 0.997038,
+      "recv_lag7": 0.981558,
+      "recv_roll7_mean": 0.989878,
+      "recv_roll7_std": 0.989878,
+      "is_post_visit": 1.0,
+      "Installation_HasPVSystem": 1.0,
+      "weather_id": 1.0
+    },
+    "functional_dependencies": [
+      {
+        "determinant": "dow",
+        "dependent": "is_weekend"
+      },
+      {
+        "determinant": "month",
+        "dependent": "season"
+      },
+      {
+        "determinant": "Temperature_avg_hourly_mean",
+        "dependent": "hdd_15"
+      }
+    ],
+    "correlated_pairs": [
+      {
+        "a": "Temperature_avg_hourly_mean",
+        "b": "Temperature_avg_hourly_max",
+        "abs_r": 0.9727
+      },
+      {
+        "a": "Temperature_avg_hourly_mean",
+        "b": "hdd_15",
+        "abs_r": 0.9583
+      },
+      {
+        "a": "recv_lag7",
+        "b": "recv_roll7_mean",
+        "abs_r": 0.9513
+      },
+      {
+        "a": "recv_lag1",
+        "b": "recv_roll7_mean",
+        "abs_r": 0.9511
+      },
+      {
+        "a": "Temperature_avg_hourly_mean",
+        "b": "Temperature_avg_hourly_min",
+        "abs_r": 0.9498
+      },
+      {
+        "a": "Temperature_avg_hourly_min",
+        "b": "DewPoint_hourly_mean",
+        "abs_r": 0.9487
+      },
+      {
+        "a": "Temperature_avg_hourly_max",
+        "b": "hdd_15",
+        "abs_r": 0.9265
+      },
+      {
+        "a": "Temperature_avg_hourly_min",
+        "b": "hdd_15",
+        "abs_r": 0.9232
+      },
+      {
+        "a": "Temperature_avg_hourly_mean",
+        "b": "DewPoint_hourly_mean",
+        "abs_r": 0.9165
+      },
+      {
+        "a": "DewPoint_hourly_mean",
+        "b": "hdd_15",
+        "abs_r": 0.9025
+      }
+    ],
+    "note": "features is the contract: the modeling stage takes exactly these columns under exactly these names. The list is a declaration - nothing here was selected by a statistic against the target. Functional dependencies and correlated pairs are reported so the modeling stage can act on them; the panel does not.",
+    "split_frames": {
+      "columns": [
+        "Household_ID",
+        "date",
+        "gross_load",
+        "dow",
+        "month",
+        "season",
+        "is_weekend",
+        "is_holiday",
+        "Temperature_avg_hourly_mean",
+        "Temperature_avg_hourly_min",
+        "Temperature_avg_hourly_max",
+        "Humidity_avg_hourly_mean",
+        "WindSpeed_hourly_mean",
+        "DewPoint_hourly_mean",
+        "Precipitation_total_hourly_sum",
+        "Sunshine_duration_hourly_sum",
+        "hdd_15",
+        "recv_lag1",
+        "recv_lag7",
+        "recv_roll7_mean",
+        "recv_roll7_std",
+        "is_post_visit",
+        "Installation_HasPVSystem",
+        "weather_id"
+      ],
+      "n_columns": 24,
+      "filter": "is_modelable (target value present, see D-19)",
+      "splits": {
+        "train": {
+          "file": "panel_train.parquet",
+          "rows": 65502,
+          "columns": 24,
+          "households": 146,
+          "date_min": "2019-01-02",
+          "date_max": "2023-06-30"
+        },
+        "test": {
+          "file": "panel_test.parquet",
+          "rows": 15583,
+          "columns": 24,
+          "households": 70,
+          "date_min": "2023-07-01",
+          "date_max": "2024-03-01"
+        }
+      },
+      "note": "Ready-to-use frames: keys, target and features, rows already filtered. No split column (it is the file name) and no is_modelable (the filter has been applied). The panel remains the source of truth and keeps both."
+    }
+  },
+  "feature_groups": {
+    "autoregressive": [
+      "recv_lag1",
+      "recv_lag7",
+      "recv_roll7_mean",
+      "recv_roll7_std"
+    ],
+    "weather": [
+      "Temperature_avg_hourly_mean",
+      "Temperature_avg_hourly_min",
+      "Temperature_avg_hourly_max",
+      "Humidity_avg_hourly_mean",
+      "WindSpeed_hourly_mean",
+      "DewPoint_hourly_mean",
+      "Precipitation_total_hourly_sum",
+      "Sunshine_duration_hourly_sum",
+      "hdd_15"
+    ],
+    "calendar": [
+      "dow",
+      "month",
+      "season",
+      "is_weekend",
+      "is_holiday"
+    ],
+    "regime": [
+      "is_post_visit"
+    ],
+    "static": [
+      "Installation_HasPVSystem",
+      "weather_id"
+    ]
+  },
+  "n_features": 21,
+  "panel_slim": true,
+  "panel_slim_note": "The panel holds only the contract columns: keys, target, features, split and is_modelable. The reserve, the passthrough measurements and the remaining row flags were computed and checked but not written. Set config.PANEL_SLIM = False and rerun stage 3 (about two seconds) to get them back. The survey attributes need no rerun at all - they are in 02_clean/households.parquet with one row per household and join back over Household_ID.",
+  "deselected": {
+    "note": "Computed and checked, but NOT passed on as a feature - and with config.PANEL_SLIM on, NOT present in the written panel either. For a comparison model add them to the respective group and rerun stage 3.",
+    "present_in_panel": false,
+    "reasons": {
+      "autoregressive": "Lags 1 and 7 cover the daily and weekly rhythm, roll7 the level. Lags 3, 9, 14 and roll28 are strongly correlated with them and cost additional edge rows: roll28 needs 14 populated days of lead-in.",
+      "weather": "Pressure is structurally missing at 3 of 8 stations (37.5 percent) and is of secondary importance for heating demand. The wind maximum is highly correlated with the mean. The rolling weather windows represent building inertia - a hypothesis to be tested against the baseline, not to be assumed up front.",
+      "calendar": "doy_sin and doy_cos encode the yearly seasonality, which is already in the set via month and season. They remain available as a smooth alternative for linear models.",
+      "regime": "days_since_visit cannot be determined for 98 of 153 households (40 percent of the rows NaN). is_visit_day affects 56 rows in the whole panel - too few for a pooled model. The intervention state itself stays active.",
+      "static": "Survey attributes and equipment flags are time-invariant and can only shift the level in the pooled model that recv_lag1 and recv_roll7_mean already carry. Four survey columns additionally have 44 to 95 percent non-responses. Their contribution is the question of the ablation experiment."
+    },
+    "columns": {
+      "autoregressive": [
+        "recv_lag3",
+        "recv_lag9",
+        "recv_lag14",
+        "recv_roll28_mean",
+        "recv_roll28_std"
+      ],
+      "weather": [
+        "WindSpeed_hourly_max",
+        "Pressure_BarometricHeight_avg_hourly_mean",
+        "hdd_15_roll7_mean",
+        "Temperature_avg_hourly_mean_roll7_mean"
+      ],
+      "calendar": [
+        "doy_sin",
+        "doy_cos"
+      ],
+      "regime": [
+        "is_visit_day",
+        "days_since_visit"
+      ],
+      "static": [
+        "pv_flag_imputed",
+        "has_meta_survey",
+        "has_heatpump_submeter",
+        "station_has_sunshine",
+        "station_has_pressure",
+        "Survey_Building_Type",
+        "Survey_HeatPump_Installation_Type",
+        "Survey_Building_LivingArea",
+        "Survey_Building_Residents",
+        "Survey_HeatDistribution_System_FloorHeating",
+        "Survey_HeatDistribution_System_Radiator",
+        "Survey_DHW_Production_ByHeatPump",
+        "Survey_DHW_Production_ByElectricWaterHeater",
+        "Survey_DHW_Production_BySolar",
+        "Survey_Installation_HasDryer",
+        "Survey_Installation_HasFreezer",
+        "Survey_Installation_HasElectricVehicle"
+      ]
+    }
+  },
+  "passthrough": [],
+  "flags": [
+    "is_modelable"
+  ],
+  "forecast_lag_days": 1,
+  "weather_shift_days": 1,
+  "weather_naming_note": "Weather columns carry the name of their daily aggregate without a lag suffix, but contain the observation from d-1 - see weather_shift_days. They are observations, not forecasts.",
+  "hdd_base_c": 15.0,
+  "split_cutoff": "2023-06-30",
+  "panel_window": [
+    "2019-01-02",
+    "2024-03-01"
+  ],
+  "weather_window": [
+    "2019-01-02",
+    "2024-03-01"
+  ],
+  "trimmed_to_weather_window": true,
+  "weather_window_note": "Rows outside weather_window were removed: no weather was delivered for that period, which is a property of the dataset rather than of the operating situation. A missing weather value INSIDE the window is a station outage and is kept - is_modelable does not require weather.",
+  "is_modelable_definition": "target value present - nothing else. Neither lags nor weather are required: a missing lag follows a meter outage, a missing weather value a station outage, and both occur in production on days for which a bid still has to be placed. Feature availability is readable per row from the columns themselves, so a stricter subset can be reproduced in the modeling stage at any time.",
+  "gap_rows_removed": true,
+  "gap_rows_note": "The calendar rows inserted in stage 2 (is_gap) were removed after the features were built. They carried no measurement. As a result the panel is NOT gapless per household - reindex before running further time series operations on it."
+}

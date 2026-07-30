@@ -1,0 +1,23 @@
+Household_ID;Group;AffectsTimePoint;Timestamp;kWh_received_Total;kWh_received_HeatPump;kWh_received_Other;kWh_returned_Total;kvarh_received_capacitive_Total;kvarh_received_capacitive_HeatPump;kvarh_received_capacitive_Other;kvarh_received_inductive_Total;kvarh_received_inductive_HeatPump;kvarh_received_inductive_Other
+109104;treatment;after visit;2024-02-28 23:59:59+00:00;42.51;;;;1.06;;;20.7;;
+109104;treatment;after visit;2024-02-29 23:59:59+00:00;41.15;;;;0.99;;;20.13;;
+109104;treatment;after visit;2024-03-01 23:59:59+00:00;42.02;;;;1.04;;;21.19;;
+109104;treatment;after visit;2024-03-02 23:59:59+00:00;52.86;;;;0.98;;;23.07;;
+109104;treatment;after visit;2024-03-03 23:59:59+00:00;44.08;;;;1.31;;;18.02;;
+109104;treatment;after visit;2024-03-04 23:59:59+00:00;38.2;;;;1.18;;;17.08;;
+109104;treatment;after visit;2024-03-05 23:59:59+00:00;38.9;;;;1.22;;;18.2;;
+109104;treatment;after visit;2024-03-06 23:59:59+00:00;50.47;;;;0.98;;;25.37;;
+109104;treatment;after visit;2024-03-07 23:59:59+00:00;49.65;;;;0.99;;;24.85;;
+109104;treatment;after visit;2024-03-08 23:59:59+00:00;48.57;;;;1.0;;;25.82;;
+109104;treatment;after visit;2024-03-09 23:59:59+00:00;46.52;;;;1.21;;;21.14;;
+109104;treatment;after visit;2024-03-10 23:59:59+00:00;43.26;;;;1.24;;;18.45;;
+109104;treatment;after visit;2024-03-11 23:59:59+00:00;44.0;;;;1.09;;;20.95;;
+109104;treatment;after visit;2024-03-12 23:59:59+00:00;47.5;;;;1.1;;;20.22;;
+109104;treatment;after visit;2024-03-13 23:59:59+00:00;41.72;;;;1.3;;;19.22;;
+109104;treatment;after visit;2024-03-14 23:59:59+00:00;38.35;;;;1.16;;;17.03;;
+109104;treatment;after visit;2024-03-15 23:59:59+00:00;34.59;;;;1.71;;;11.0;;
+109104;treatment;after visit;2024-03-16 23:59:59+00:00;29.38;;;;1.56;;;10.77;;
+109104;treatment;after visit;2024-03-17 23:59:59+00:00;37.58;;;;1.77;;;10.57;;
+109104;treatment;after visit;2024-03-18 23:59:59+00:00;25.02;;;;1.61;;;6.32;;
+109104;treatment;after visit;2024-03-19 23:59:59+00:00;28.37;;;;1.65;;;8.05;;
+109104;treatment;after visit;2024-03-20 23:59:59+00:00;23.48;;;;1.52;;;7.09;;

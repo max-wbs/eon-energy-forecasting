@@ -1,0 +1,1373 @@
+{
+  "stage": 3,
+  "title": "Panel, Features & Split",
+  "started_at": "2026-07-30T11:50:35+00:00",
+  "finished_at": "2026-07-30T11:50:36+00:00",
+  "status": "ok",
+  "error": null,
+  "entries": [
+    {
+      "kind": "step",
+      "name": "Read the results of stage 2"
+    },
+    {
+      "kind": "metric",
+      "step": "Read the results of stage 2",
+      "label": "Smart meter rows",
+      "value": 86811,
+      "unit": ""
+    },
+    {
+      "kind": "metric",
+      "step": "Read the results of stage 2",
+      "label": "Households",
+      "value": 153,
+      "unit": ""
+    },
+    {
+      "kind": "metric",
+      "step": "Read the results of stage 2",
+      "label": "Weather daily rows",
+      "value": 15088,
+      "unit": ""
+    },
+    {
+      "kind": "note",
+      "step": "Read the results of stage 2",
+      "text": "Source: data\\interim\\02_clean (stage-2 output only)"
+    },
+    {
+      "kind": "step",
+      "name": "Date the weather to the forecasting point in time"
+    },
+    {
+      "kind": "metric",
+      "step": "Date the weather to the forecasting point in time",
+      "label": "Weather daily rows",
+      "value": 15088,
+      "unit": ""
+    },
+    {
+      "kind": "metric",
+      "step": "Date the weather to the forecasting point in time",
+      "label": "Shifted weather columns",
+      "value": 13,
+      "unit": ""
+    },
+    {
+      "kind": "metric",
+      "step": "Date the weather to the forecasting point in time",
+      "label": "of which rolling statistics",
+      "value": 2,
+      "unit": ""
+    },
+    {
+      "kind": "metric",
+      "step": "Date the weather to the forecasting point in time",
+      "label": "Shift",
+      "value": 1,
+      "unit": "days"
+    },
+    {
+      "kind": "metric",
+      "step": "Date the weather to the forecasting point in time",
+      "label": "Valid for target days from",
+      "value": "2019-01-02",
+      "unit": ""
+    },
+    {
+      "kind": "metric",
+      "step": "Date the weather to the forecasting point in time",
+      "label": "Valid for target days to",
+      "value": "2024-03-01",
+      "unit": ""
+    },
+    {
+      "kind": "note",
+      "step": "Date the weather to the forecasting point in time",
+      "text": "The weather columns keep the name of their daily aggregate and contain the observation from d-1. The shift is therefore no longer readable from the name - it is proven in prove_leakage_free for each column individually against an independent self-join, including a counter-check against the target-day value"
+    },
+    {
+      "kind": "note",
+      "step": "Date the weather to the forecasting point in time",
+      "text": "No target-day weather is carried along: only observed values enter, no forecast. A perfect-forecast assumption is not made"
+    },
+    {
+      "kind": "step",
+      "name": "Assemble the panel"
+    },
+    {
+      "kind": "check",
+      "step": "Assemble the panel",
+      "name": "join with the master data multiplies no rows",
+      "ok": true,
+      "detail": "panel x master data: 86811 -> 86811 rows",
+      "hard": true
+    },
+    {
+      "kind": "note",
+      "step": "Assemble the panel",
+      "text": "Household-wide metrics (n_days, target_missing_rate, ...) are deliberately NOT joined into the panel - they are computed over the entire period and would carry information from the test window into the training rows"
+    },
+    {
+      "kind": "check",
+      "step": "Assemble the panel",
+      "name": "join with the weather multiplies no rows",
+      "ok": true,
+      "detail": "panel x shifted weather: 86811 -> 86811 rows",
+      "hard": true
+    },
+    {
+      "kind": "check",
+      "step": "Assemble the panel",
+      "name": "join with the station properties multiplies no rows",
+      "ok": true,
+      "detail": "panel x station properties: 86811 -> 86811 rows",
+      "hard": true
+    },
+    {
+      "kind": "check",
+      "step": "Assemble the panel",
+      "name": "station_has_sunshine populated on all rows",
+      "ok": true,
+      "detail": "0 rows without a value",
+      "hard": true
+    },
+    {
+      "kind": "check",
+      "step": "Assemble the panel",
+      "name": "station_has_pressure populated on all rows",
+      "ok": true,
+      "detail": "0 rows without a value",
+      "hard": true
+    },
+    {
+      "kind": "check",
+      "step": "Assemble the panel",
+      "name": "(Household_ID, date) unique after the joins",
+      "ok": true,
+      "detail": "",
+      "hard": true
+    },
+    {
+      "kind": "metric",
+      "step": "Assemble the panel",
+      "label": "Panel rows",
+      "value": 86811,
+      "unit": ""
+    },
+    {
+      "kind": "metric",
+      "step": "Assemble the panel",
+      "label": "Panel columns",
+      "value": 52,
+      "unit": ""
+    },
+    {
+      "kind": "step",
+      "name": "Trim the panel to the usable time window"
+    },
+    {
+      "kind": "metric",
+      "step": "Trim the panel to the usable time window",
+      "label": "Trim active",
+      "value": "yes",
+      "unit": ""
+    },
+    {
+      "kind": "metric",
+      "step": "Trim the panel to the usable time window",
+      "label": "Window from",
+      "value": "2019-01-02",
+      "unit": ""
+    },
+    {
+      "kind": "metric",
+      "step": "Trim the panel to the usable time window",
+      "label": "Window to",
+      "value": "2024-03-01",
+      "unit": ""
+    },
+    {
+      "kind": "metric",
+      "step": "Trim the panel to the usable time window",
+      "label": "Rows before",
+      "value": 86811,
+      "unit": ""
+    },
+    {
+      "kind": "metric",
+      "step": "Trim the panel to the usable time window",
+      "label": "Rows after",
+      "value": 83398,
+      "unit": ""
+    },
+    {
+      "kind": "metric",
+      "step": "Trim the panel to the usable time window",
+      "label": "Discarded rows",
+      "value": 3413,
+      "unit": ""
+    },
+    {
+      "kind": "metric",
+      "step": "Trim the panel to the usable time window",
+      "label": "of which with a target value",
+      "value": 3413,
+      "unit": ""
+    },
+    {
+      "kind": "metric",
+      "step": "Trim the panel to the usable time window",
+      "label": "Households before",
+      "value": 153,
+      "unit": ""
+    },
+    {
+      "kind": "metric",
+      "step": "Trim the panel to the usable time window",
+      "label": "Households after",
+      "value": 153,
+      "unit": ""
+    },
+    {
+      "kind": "note",
+      "step": "Trim the panel to the usable time window",
+      "text": "The window is the weather window (2019-01-01 to 2024-02-29) moved back by 1 day(s), because every target day needs the observation from d-1"
+    },
+    {
+      "kind": "check",
+      "step": "Trim the panel to the usable time window",
+      "name": "no date outside the window",
+      "ok": true,
+      "detail": "",
+      "hard": true
+    },
+    {
+      "kind": "check",
+      "step": "Trim the panel to the usable time window",
+      "name": "daily grid still gapless after the trim",
+      "ok": true,
+      "detail": "153 groups gapless",
+      "hard": true
+    },
+    {
+      "kind": "step",
+      "name": "Autoregressive features (leakage firewall)"
+    },
+    {
+      "kind": "metric",
+      "step": "Autoregressive features (leakage firewall)",
+      "label": "Lag columns",
+      "value": 5,
+      "unit": ""
+    },
+    {
+      "kind": "metric",
+      "step": "Autoregressive features (leakage firewall)",
+      "label": "Rolling columns",
+      "value": 4,
+      "unit": ""
+    },
+    {
+      "kind": "metric",
+      "step": "Autoregressive features (leakage firewall)",
+      "label": "Active lags",
+      "value": "d-1, d-7",
+      "unit": ""
+    },
+    {
+      "kind": "metric",
+      "step": "Autoregressive features (leakage firewall)",
+      "label": "Smallest lag used",
+      "value": 1,
+      "unit": "days"
+    },
+    {
+      "kind": "metric",
+      "step": "Autoregressive features (leakage firewall)",
+      "label": "Shift before the rolling",
+      "value": 1,
+      "unit": "days"
+    },
+    {
+      "kind": "metric",
+      "step": "Autoregressive features (leakage firewall)",
+      "label": "min_periods in the 7-day window",
+      "value": 4,
+      "unit": ""
+    },
+    {
+      "kind": "metric",
+      "step": "Autoregressive features (leakage firewall)",
+      "label": "Rows without a lag-7 value (edges and gaps)",
+      "value": 3358,
+      "unit": ""
+    },
+    {
+      "kind": "metric",
+      "step": "Autoregressive features (leakage firewall)",
+      "label": "Rows without a lag-1 value",
+      "value": 2464,
+      "unit": ""
+    },
+    {
+      "kind": "note",
+      "step": "Autoregressive features (leakage firewall)",
+      "text": "Edges stay NaN: no backfill (would be leakage), no forward fill (would be invented). Filtering these rows is left to the modeling stage so that the panel keeps its complete calendar structure"
+    },
+    {
+      "kind": "note",
+      "step": "Autoregressive features (leakage firewall)",
+      "text": "After a calendar gap the lags are NaN as well, because the target value is missing in the gap rows - exactly the desired behaviour"
+    },
+    {
+      "kind": "step",
+      "name": "Calendar features"
+    },
+    {
+      "kind": "metric",
+      "step": "Calendar features",
+      "label": "Calendar columns",
+      "value": 7,
+      "unit": ""
+    },
+    {
+      "kind": "metric",
+      "step": "Calendar features",
+      "label": "Holidays in the panel",
+      "value": 1991,
+      "unit": ""
+    },
+    {
+      "kind": "metric",
+      "step": "Calendar features",
+      "label": "Distinct holiday dates",
+      "value": 45,
+      "unit": ""
+    },
+    {
+      "kind": "metric",
+      "step": "Calendar features",
+      "label": "Weekend rows",
+      "value": 23785,
+      "unit": ""
+    },
+    {
+      "kind": "note",
+      "step": "Calendar features",
+      "text": "Holidays taken nationally (holidays.Germany without subdiv). The household locations are only known through anonymised weather stations, a federal state cannot be assigned - state-specific holidays would be guesswork"
+    },
+    {
+      "kind": "note",
+      "step": "Calendar features",
+      "text": "Day length was deliberately left out: at a fixed latitude it is a deterministic function of the day of year and therefore already covered by doy_sin/doy_cos; computing it would require a latitude assumption the data does not support"
+    },
+    {
+      "kind": "step",
+      "name": "Feature selection"
+    },
+    {
+      "kind": "check",
+      "step": "Feature selection",
+      "name": "all active features exist in the panel",
+      "ok": true,
+      "detail": "[]",
+      "hard": true
+    },
+    {
+      "kind": "check",
+      "step": "Feature selection",
+      "name": "no column twice in the selection",
+      "ok": true,
+      "detail": "[]",
+      "hard": true
+    },
+    {
+      "kind": "check",
+      "step": "Feature selection",
+      "name": "no passthrough or target column in the selection",
+      "ok": true,
+      "detail": "20 features checked",
+      "hard": true
+    },
+    {
+      "kind": "check",
+      "step": "Feature selection",
+      "name": "no row quality flag used as a feature",
+      "ok": true,
+      "detail": "[]",
+      "hard": true
+    },
+    {
+      "kind": "metric",
+      "step": "Feature selection",
+      "label": "Features autoregressive",
+      "value": "4 active, 5 in reserve",
+      "unit": ""
+    },
+    {
+      "kind": "metric",
+      "step": "Feature selection",
+      "label": "Features weather",
+      "value": "9 active, 4 in reserve",
+      "unit": ""
+    },
+    {
+      "kind": "metric",
+      "step": "Feature selection",
+      "label": "Features calendar",
+      "value": "5 active, 2 in reserve",
+      "unit": ""
+    },
+    {
+      "kind": "metric",
+      "step": "Feature selection",
+      "label": "Features regime",
+      "value": "1 active, 2 in reserve",
+      "unit": ""
+    },
+    {
+      "kind": "metric",
+      "step": "Feature selection",
+      "label": "Features static",
+      "value": "1 active, 17 in reserve",
+      "unit": ""
+    },
+    {
+      "kind": "metric",
+      "step": "Feature selection",
+      "label": "Active features in total",
+      "value": 20,
+      "unit": ""
+    },
+    {
+      "kind": "metric",
+      "step": "Feature selection",
+      "label": "Reserve columns in total",
+      "value": 30,
+      "unit": ""
+    },
+    {
+      "kind": "note",
+      "step": "Feature selection",
+      "text": "Reserve autoregressive: recv_lag3, recv_lag9, recv_lag14, recv_roll28_mean, recv_roll28_std - Lags 1 and 7 cover the daily and weekly rhythm, roll7 the level. Lags 3, 9, 14 and roll28 are strongly correlated with them and cost additional edge rows: roll28 needs 14 populated days of lead-in."
+    },
+    {
+      "kind": "note",
+      "step": "Feature selection",
+      "text": "Reserve weather: WindSpeed_hourly_max, Pressure_BarometricHeight_avg_hourly_mean, hdd_15_roll7_mean, Temperature_avg_hourly_mean_roll7_mean - Pressure is structurally missing at 3 of 8 stations (37.5 percent) and is of secondary importance for heating demand. The wind maximum is highly correlated with the mean. The rolling weather windows represent building inertia - a hypothesis to be tested against the baseline, not to be assumed up front."
+    },
+    {
+      "kind": "note",
+      "step": "Feature selection",
+      "text": "Reserve calendar: doy_sin, doy_cos - doy_sin and doy_cos encode the yearly seasonality, which is already in the set via month and season. They remain available as a smooth alternative for linear models."
+    },
+    {
+      "kind": "note",
+      "step": "Feature selection",
+      "text": "Reserve regime: is_visit_day, days_since_visit - days_since_visit cannot be determined for 98 of 153 households (40 percent of the rows NaN). is_visit_day affects 56 rows in the whole panel - too few for a pooled model. The intervention state itself stays active."
+    },
+    {
+      "kind": "note",
+      "step": "Feature selection",
+      "text": "Reserve static: pv_flag_imputed, has_meta_survey, has_heatpump_submeter, station_has_sunshine, station_has_pressure, Survey_Building_Type, Survey_HeatPump_Installation_Type, Survey_Building_LivingArea, Survey_Building_Residents, Survey_HeatDistribution_System_FloorHeating, Survey_HeatDistribution_System_Radiator, Survey_DHW_Production_ByHeatPump, Survey_DHW_Production_ByElectricWaterHeater, Survey_DHW_Production_BySolar, Survey_Installation_HasDryer, Survey_Installation_HasFreezer, Survey_Installation_HasElectricVehicle - Survey attributes and equipment flags are time-invariant and can only shift the level in the pooled model that recv_lag1 and recv_roll7_mean already carry. Four survey columns additionally have 44 to 95 percent non-responses. Their contribution is the question of the ablation experiment."
+    },
+    {
+      "kind": "note",
+      "step": "Feature selection",
+      "text": "The reserve columns stay in the panel so that a comparison model using them is possible without a new pipeline run. They are listed in the schema under 'deselected', not under 'feature_groups' - a modeling script that follows the schema does not see them"
+    },
+    {
+      "kind": "step",
+      "name": "Leakage proofs"
+    },
+    {
+      "kind": "check",
+      "step": "Leakage proofs",
+      "name": "recv_lag1 carries the target value of d-1",
+      "ok": true,
+      "detail": "200 samples, 0 deviations, 0 without a counterpart",
+      "hard": true
+    },
+    {
+      "kind": "check",
+      "step": "Leakage proofs",
+      "name": "recv_lag7 carries the target value of d-7",
+      "ok": true,
+      "detail": "200 samples, 0 deviations, 0 without a counterpart",
+      "hard": true
+    },
+    {
+      "kind": "check",
+      "step": "Leakage proofs",
+      "name": "first row of every household without lag values (groupby takes effect)",
+      "ok": true,
+      "detail": "153 households, all lag columns empty at the start of the series",
+      "hard": true
+    },
+    {
+      "kind": "check",
+      "step": "Leakage proofs",
+      "name": "Temperature_avg_hourly_mean carries the observation from d-1",
+      "ok": true,
+      "detail": "2000 samples, 0 deviations",
+      "hard": true
+    },
+    {
+      "kind": "check",
+      "step": "Leakage proofs",
+      "name": "Temperature_avg_hourly_mean is not the target-day value",
+      "ok": true,
+      "detail": "2000 of 2000 samples differ from the target-day value",
+      "hard": true
+    },
+    {
+      "kind": "check",
+      "step": "Leakage proofs",
+      "name": "Temperature_avg_hourly_min carries the observation from d-1",
+      "ok": true,
+      "detail": "2000 samples, 0 deviations",
+      "hard": true
+    },
+    {
+      "kind": "check",
+      "step": "Leakage proofs",
+      "name": "Temperature_avg_hourly_min is not the target-day value",
+      "ok": true,
+      "detail": "1971 of 2000 samples differ from the target-day value",
+      "hard": true
+    },
+    {
+      "kind": "check",
+      "step": "Leakage proofs",
+      "name": "Temperature_avg_hourly_max carries the observation from d-1",
+      "ok": true,
+      "detail": "2000 samples, 0 deviations",
+      "hard": true
+    },
+    {
+      "kind": "check",
+      "step": "Leakage proofs",
+      "name": "Temperature_avg_hourly_max is not the target-day value",
+      "ok": true,
+      "detail": "1957 of 2000 samples differ from the target-day value",
+      "hard": true
+    },
+    {
+      "kind": "check",
+      "step": "Leakage proofs",
+      "name": "DewPoint_hourly_mean carries the observation from d-1",
+      "ok": true,
+      "detail": "2000 samples, 0 deviations",
+      "hard": true
+    },
+    {
+      "kind": "check",
+      "step": "Leakage proofs",
+      "name": "DewPoint_hourly_mean is not the target-day value",
+      "ok": true,
+      "detail": "1995 of 2000 samples differ from the target-day value",
+      "hard": true
+    },
+    {
+      "kind": "check",
+      "step": "Leakage proofs",
+      "name": "Humidity_avg_hourly_mean carries the observation from d-1",
+      "ok": true,
+      "detail": "2000 samples, 0 deviations",
+      "hard": true
+    },
+    {
+      "kind": "check",
+      "step": "Leakage proofs",
+      "name": "Humidity_avg_hourly_mean is not the target-day value",
+      "ok": true,
+      "detail": "1999 of 2000 samples differ from the target-day value",
+      "hard": true
+    },
+    {
+      "kind": "check",
+      "step": "Leakage proofs",
+      "name": "WindSpeed_hourly_mean carries the observation from d-1",
+      "ok": true,
+      "detail": "2000 samples, 0 deviations",
+      "hard": true
+    },
+    {
+      "kind": "check",
+      "step": "Leakage proofs",
+      "name": "WindSpeed_hourly_mean is not the target-day value",
+      "ok": true,
+      "detail": "1986 of 2000 samples differ from the target-day value",
+      "hard": true
+    },
+    {
+      "kind": "check",
+      "step": "Leakage proofs",
+      "name": "WindSpeed_hourly_max carries the observation from d-1",
+      "ok": true,
+      "detail": "2000 samples, 0 deviations",
+      "hard": true
+    },
+    {
+      "kind": "check",
+      "step": "Leakage proofs",
+      "name": "WindSpeed_hourly_max is not the target-day value",
+      "ok": true,
+      "detail": "1950 of 2000 samples differ from the target-day value",
+      "hard": true
+    },
+    {
+      "kind": "check",
+      "step": "Leakage proofs",
+      "name": "Pressure_BarometricHeight_avg_hourly_mean carries the observation from d-1",
+      "ok": true,
+      "detail": "2000 samples, 0 deviations",
+      "hard": true
+    },
+    {
+      "kind": "check",
+      "step": "Leakage proofs",
+      "name": "Pressure_BarometricHeight_avg_hourly_mean is not the target-day value",
+      "ok": true,
+      "detail": "1995 of 2000 samples differ from the target-day value",
+      "hard": true
+    },
+    {
+      "kind": "check",
+      "step": "Leakage proofs",
+      "name": "Precipitation_total_hourly_sum carries the observation from d-1",
+      "ok": true,
+      "detail": "2000 samples, 0 deviations",
+      "hard": true
+    },
+    {
+      "kind": "check",
+      "step": "Leakage proofs",
+      "name": "Precipitation_total_hourly_sum is not the target-day value",
+      "ok": true,
+      "detail": "1260 of 2000 samples differ from the target-day value",
+      "hard": true
+    },
+    {
+      "kind": "check",
+      "step": "Leakage proofs",
+      "name": "Sunshine_duration_hourly_sum carries the observation from d-1",
+      "ok": true,
+      "detail": "2000 samples, 0 deviations",
+      "hard": true
+    },
+    {
+      "kind": "check",
+      "step": "Leakage proofs",
+      "name": "Sunshine_duration_hourly_sum is not the target-day value",
+      "ok": true,
+      "detail": "1775 of 2000 samples differ from the target-day value",
+      "hard": true
+    },
+    {
+      "kind": "check",
+      "step": "Leakage proofs",
+      "name": "hdd_15 carries the observation from d-1",
+      "ok": true,
+      "detail": "2000 samples, 0 deviations",
+      "hard": true
+    },
+    {
+      "kind": "check",
+      "step": "Leakage proofs",
+      "name": "hdd_15 is not the target-day value",
+      "ok": true,
+      "detail": "1441 of 2000 samples differ from the target-day value",
+      "hard": true
+    },
+    {
+      "kind": "metric",
+      "step": "Leakage proofs",
+      "label": "Weather columns passing the shift proof",
+      "value": "11 of 11",
+      "unit": ""
+    },
+    {
+      "kind": "note",
+      "step": "Leakage proofs",
+      "text": "The weather columns no longer carry a lag suffix but the name of the daily aggregate. The shift by 1 day(s) is therefore evidenced exclusively here - per column against an independent self-join, with a counter-check against the target-day value. Whoever reads the names must mind forecast_lag_days in the schema: it is an observation, not a target-day value"
+    },
+    {
+      "kind": "step",
+      "name": "Remove the inserted calendar gap rows"
+    },
+    {
+      "kind": "check",
+      "step": "Remove the inserted calendar gap rows",
+      "name": "gap rows carry no measurement at all",
+      "ok": true,
+      "detail": "10 meter columns checked, all empty on the gap rows",
+      "hard": true
+    },
+    {
+      "kind": "metric",
+      "step": "Remove the inserted calendar gap rows",
+      "label": "Rows before",
+      "value": 83398,
+      "unit": ""
+    },
+    {
+      "kind": "metric",
+      "step": "Remove the inserted calendar gap rows",
+      "label": "Gap rows removed",
+      "value": 1347,
+      "unit": ""
+    },
+    {
+      "kind": "metric",
+      "step": "Remove the inserted calendar gap rows",
+      "label": "Rows after",
+      "value": 82051,
+      "unit": ""
+    },
+    {
+      "kind": "metric",
+      "step": "Remove the inserted calendar gap rows",
+      "label": "Households affected",
+      "value": 39,
+      "unit": ""
+    },
+    {
+      "kind": "metric",
+      "step": "Remove the inserted calendar gap rows",
+      "label": "Households before / after",
+      "value": "153 / 153",
+      "unit": ""
+    },
+    {
+      "kind": "check",
+      "step": "Remove the inserted calendar gap rows",
+      "name": "no row without a target value left over from the gaps",
+      "ok": true,
+      "detail": "",
+      "hard": true
+    },
+    {
+      "kind": "note",
+      "step": "Remove the inserted calendar gap rows",
+      "text": "The gap rows only ever served the correctness of shift and rolling on a gapless daily grid. Now that the features exist they carry no information: not one of the 10 measurement columns is populated on them, the target value included"
+    },
+    {
+      "kind": "note",
+      "step": "Remove the inserted calendar gap rows",
+      "text": "Consequence for downstream stages: the panel is deliberately NO LONGER gapless per household. Any further time series operation on the model table would have to reindex first - the features built here are unaffected, they were computed on the complete grid"
+    },
+    {
+      "kind": "step",
+      "name": "Assign the temporal train/test split"
+    },
+    {
+      "kind": "metric",
+      "step": "Assign the temporal train/test split",
+      "label": "Cutoff (last training day)",
+      "value": "2023-06-30",
+      "unit": ""
+    },
+    {
+      "kind": "metric",
+      "step": "Assign the temporal train/test split",
+      "label": "Rows train",
+      "value": 66400,
+      "unit": ""
+    },
+    {
+      "kind": "metric",
+      "step": "Assign the temporal train/test split",
+      "label": "Rows test",
+      "value": 15651,
+      "unit": ""
+    },
+    {
+      "kind": "metric",
+      "step": "Assign the temporal train/test split",
+      "label": "Test share of all rows",
+      "value": 19.074721819356252,
+      "unit": "%"
+    },
+    {
+      "kind": "metric",
+      "step": "Assign the temporal train/test split",
+      "label": "Rows with a target value train",
+      "value": 65502,
+      "unit": ""
+    },
+    {
+      "kind": "metric",
+      "step": "Assign the temporal train/test split",
+      "label": "Rows with a target value test",
+      "value": 15583,
+      "unit": ""
+    },
+    {
+      "kind": "metric",
+      "step": "Assign the temporal train/test split",
+      "label": "Test share of the labelled rows",
+      "value": 19.218104458284515,
+      "unit": "%"
+    },
+    {
+      "kind": "metric",
+      "step": "Assign the temporal train/test split",
+      "label": "Training period",
+      "value": "2019-01-02 to 2023-06-30",
+      "unit": ""
+    },
+    {
+      "kind": "metric",
+      "step": "Assign the temporal train/test split",
+      "label": "Test period",
+      "value": "2023-07-01 to 2024-03-01",
+      "unit": ""
+    },
+    {
+      "kind": "check",
+      "step": "Assign the temporal train/test split",
+      "name": "test starts strictly after the end of training",
+      "ok": true,
+      "detail": "2023-06-30 < 2023-07-01",
+      "hard": true
+    },
+    {
+      "kind": "check",
+      "step": "Assign the temporal train/test split",
+      "name": "boundary day belongs to train",
+      "ok": true,
+      "detail": "",
+      "hard": true
+    },
+    {
+      "kind": "check",
+      "step": "Assign the temporal train/test split",
+      "name": "split column fully populated",
+      "ok": true,
+      "detail": "",
+      "hard": true
+    },
+    {
+      "kind": "metric",
+      "step": "Assign the temporal train/test split",
+      "label": "Households in training",
+      "value": 146,
+      "unit": ""
+    },
+    {
+      "kind": "metric",
+      "step": "Assign the temporal train/test split",
+      "label": "Households in test",
+      "value": 71,
+      "unit": ""
+    },
+    {
+      "kind": "note",
+      "step": "Assign the temporal train/test split",
+      "text": "Households only in the test set (without training history): ['109104', '412211', '731027', '758039', '768113', '841211', '877881']"
+    },
+    {
+      "kind": "note",
+      "step": "Assign the temporal train/test split",
+      "text": "82 households appear only in training - their recording ends before the cutoff"
+    },
+    {
+      "kind": "note",
+      "step": "Assign the temporal train/test split",
+      "text": "A fleet-wide cutoff instead of 'the last X percent per household': otherwise training rows of one household would lie calendrically after test rows of another"
+    },
+    {
+      "kind": "step",
+      "name": "Usability of the panel"
+    },
+    {
+      "kind": "metric",
+      "step": "Usability of the panel",
+      "label": "Panel rows",
+      "value": 82051,
+      "unit": ""
+    },
+    {
+      "kind": "metric",
+      "step": "Usability of the panel",
+      "label": "of which with a target value",
+      "value": 81085,
+      "unit": ""
+    },
+    {
+      "kind": "metric",
+      "step": "Usability of the panel",
+      "label": "Share of modelable rows",
+      "value": 98.82268345297437,
+      "unit": "%"
+    },
+    {
+      "kind": "metric",
+      "step": "Usability of the panel",
+      "label": "Modelable rows without recv_lag1, recv_lag7",
+      "value": 1315,
+      "unit": ""
+    },
+    {
+      "kind": "metric",
+      "step": "Usability of the panel",
+      "label": "Modelable rows without weather (station outage)",
+      "value": 107,
+      "unit": ""
+    },
+    {
+      "kind": "note",
+      "step": "Usability of the panel",
+      "text": "Neither lags nor weather are a condition of is_modelable. A missing lag follows a meter outage, a missing weather value a station outage - both happen in production, and a fleet that has to bid every day cannot skip those days. The model has to handle the NaN (tree models do so natively) instead of having the rows removed from its evaluation"
+    },
+    {
+      "kind": "note",
+      "step": "Usability of the panel",
+      "text": "Feature availability stays readable per row from the columns themselves (recv_lag1, recv_lag7, Temperature_avg_hourly_mean). A modeling script that needs the strict subset can reproduce it in one line - the reverse, recovering rows a flag already discarded, is not possible"
+    },
+    {
+      "kind": "metric",
+      "step": "Usability of the panel",
+      "label": "Households without a single modelable row",
+      "value": 0,
+      "unit": ""
+    },
+    {
+      "kind": "metric",
+      "step": "Usability of the panel",
+      "label": "Median modelable rows per household",
+      "value": 428,
+      "unit": ""
+    },
+    {
+      "kind": "note",
+      "step": "Usability of the panel",
+      "text": "The column is_modelable marks rows with a target value - nothing else. That makes the evaluation set model-independent: models with different feature requirements are scored on the same rows and stay comparable"
+    },
+    {
+      "kind": "step",
+      "name": "Final feature pre-selection"
+    },
+    {
+      "kind": "check",
+      "step": "Final feature pre-selection",
+      "name": "all columns to be renamed exist in the panel",
+      "ok": true,
+      "detail": "kWh_received_Total -> gross_load, Weather_ID -> weather_id",
+      "hard": true
+    },
+    {
+      "kind": "check",
+      "step": "Final feature pre-selection",
+      "name": "no contract name is already occupied",
+      "ok": true,
+      "detail": "",
+      "hard": true
+    },
+    {
+      "kind": "metric",
+      "step": "Final feature pre-selection",
+      "label": "Renamed columns",
+      "value": 2,
+      "unit": ""
+    },
+    {
+      "kind": "metric",
+      "step": "Final feature pre-selection",
+      "label": "Target",
+      "value": "gross_load",
+      "unit": ""
+    },
+    {
+      "kind": "metric",
+      "step": "Final feature pre-selection",
+      "label": "Keys",
+      "value": "Household_ID, date",
+      "unit": ""
+    },
+    {
+      "kind": "metric",
+      "step": "Final feature pre-selection",
+      "label": "Categorical dtype",
+      "value": "weather_id (8 levels), season (4 levels)",
+      "unit": ""
+    },
+    {
+      "kind": "note",
+      "step": "Final feature pre-selection",
+      "text": "The rename happens at the very end of stage 3, after the leakage proofs and the split. Everything upstream keeps the source names, so the report and docs/decisions.md stay readable against the raw data; the mapping is recorded in the schema under preselection.renamed"
+    },
+    {
+      "kind": "note",
+      "step": "Final feature pre-selection",
+      "text": "kWh_received_Total becomes gross_load: the quantity is the gross draw from the grid, before any netting against PV self-consumption. The name states what it is rather than how it was metered"
+    },
+    {
+      "kind": "note",
+      "step": "Final feature pre-selection",
+      "text": "weather_id enters as a feature and is cast to category. With 8 levels it carries the regional offset the weather columns do not capture - but it is invariant per household, so it also encodes fleet structure. See docs/decisions.md D-21"
+    },
+    {
+      "kind": "check",
+      "step": "Final feature pre-selection",
+      "name": "feature_groups and preselection.features describe the same set",
+      "ok": true,
+      "detail": "21 columns in both",
+      "hard": true
+    },
+    {
+      "kind": "check",
+      "step": "Final feature pre-selection",
+      "name": "the configured HDD column (hdd_15) is part of the contract",
+      "ok": true,
+      "detail": "HDD_BASE_C=15 produces hdd_15",
+      "hard": true
+    },
+    {
+      "kind": "check",
+      "step": "Final feature pre-selection",
+      "name": "all contract features exist in the panel",
+      "ok": true,
+      "detail": "missing: []",
+      "hard": true
+    },
+    {
+      "kind": "check",
+      "step": "Final feature pre-selection",
+      "name": "no feature listed twice",
+      "ok": true,
+      "detail": "[]",
+      "hard": true
+    },
+    {
+      "kind": "check",
+      "step": "Final feature pre-selection",
+      "name": "target and keys exist",
+      "ok": true,
+      "detail": "missing: []",
+      "hard": true
+    },
+    {
+      "kind": "check",
+      "step": "Final feature pre-selection",
+      "name": "no target, passthrough or row flag among the features",
+      "ok": true,
+      "detail": "16 forbidden columns checked",
+      "hard": true
+    },
+    {
+      "kind": "check",
+      "step": "Final feature pre-selection",
+      "name": "no feature constant on train",
+      "ok": true,
+      "detail": "21 features checked",
+      "hard": true
+    },
+    {
+      "kind": "metric",
+      "step": "Final feature pre-selection",
+      "label": "Contract features",
+      "value": 21,
+      "unit": ""
+    },
+    {
+      "kind": "metric",
+      "step": "Final feature pre-selection",
+      "label": "Rows train (modelable)",
+      "value": 65502,
+      "unit": ""
+    },
+    {
+      "kind": "note",
+      "step": "Final feature pre-selection",
+      "text": "The pre-selection is a declaration, not a search: it does not shorten the list. It proves the list is sound and reports what a reader would otherwise have to rediscover. Anything computed against the target belongs in the modeling stage, inside the cross-validation - otherwise the selection error appears in no metric"
+    },
+    {
+      "kind": "check",
+      "step": "Final feature pre-selection",
+      "name": "every feature at least 80% populated on train",
+      "ok": true,
+      "detail": "lowest: Sunshine_duration_hourly_sum 90.8%",
+      "hard": false
+    },
+    {
+      "kind": "note",
+      "step": "Final feature pre-selection",
+      "text": "Not fully populated on train (kept deliberately - a missing value is a meter or station outage, a state the model has to handle rather than be spared from, see D-19): Sunshine_duration_hourly_sum 90.83%, recv_lag7 98.16%, recv_roll7_mean 98.99%, recv_roll7_std 98.99%, recv_lag1 99.70%, WindSpeed_hourly_mean 99.71%, Precipitation_total_hourly_sum 99.75%, Humidity_avg_hourly_mean 99.92%, DewPoint_hourly_mean 99.92%, Temperature_avg_hourly_mean 99.93%, Temperature_avg_hourly_min 99.93%, Temperature_avg_hourly_max 99.93%, hdd_15 99.93%"
+    },
+    {
+      "kind": "note",
+      "step": "Final feature pre-selection",
+      "text": "Exact functional dependencies among the features: is_weekend = f(dow); season = f(month); hdd_15 = f(Temperature_avg_hourly_mean). Tree models are invariant to a monotone transform of a single feature, so these carry no additional information for RF or LightGBM - they do for a linear model, where the kink is real. Reported, not removed: the choice belongs to the model, not to the panel"
+    },
+    {
+      "kind": "metric",
+      "step": "Final feature pre-selection",
+      "label": "Exact functional dependencies",
+      "value": 3,
+      "unit": ""
+    },
+    {
+      "kind": "note",
+      "step": "Final feature pre-selection",
+      "text": "Feature pairs with |r| >= 0.9: Temperature_avg_hourly_mean/Temperature_avg_hourly_max 0.973; Temperature_avg_hourly_mean/hdd_15 0.958; recv_lag7/recv_roll7_mean 0.951; recv_lag1/recv_roll7_mean 0.951; Temperature_avg_hourly_mean/Temperature_avg_hourly_min 0.950; Temperature_avg_hourly_min/DewPoint_hourly_mean 0.949; Temperature_avg_hourly_max/hdd_15 0.927; Temperature_avg_hourly_min/hdd_15 0.923; Temperature_avg_hourly_mean/DewPoint_hourly_mean 0.916; DewPoint_hourly_mean/hdd_15 0.902. Deliberately not filtered: multicollinearity costs tree models interpretability of the importances, not accuracy. Dropping the temperature extremes would cost exactly the cold days that matter most for procurement"
+    },
+    {
+      "kind": "metric",
+      "step": "Final feature pre-selection",
+      "label": "Correlated pairs (|r| >= 0.9)",
+      "value": 10,
+      "unit": ""
+    },
+    {
+      "kind": "step",
+      "name": "Reduce the panel to the contract columns"
+    },
+    {
+      "kind": "check",
+      "step": "Reduce the panel to the contract columns",
+      "name": "every contract column exists before the reduction",
+      "ok": true,
+      "detail": "missing: []",
+      "hard": true
+    },
+    {
+      "kind": "metric",
+      "step": "Reduce the panel to the contract columns",
+      "label": "Slim panel",
+      "value": true,
+      "unit": ""
+    },
+    {
+      "kind": "metric",
+      "step": "Reduce the panel to the contract columns",
+      "label": "Columns before",
+      "value": 70,
+      "unit": ""
+    },
+    {
+      "kind": "metric",
+      "step": "Reduce the panel to the contract columns",
+      "label": "Columns dropped",
+      "value": 44,
+      "unit": ""
+    },
+    {
+      "kind": "metric",
+      "step": "Reduce the panel to the contract columns",
+      "label": "Columns kept",
+      "value": 26,
+      "unit": ""
+    },
+    {
+      "kind": "metric",
+      "step": "Reduce the panel to the contract columns",
+      "label": "Kept",
+      "value": "2 keys, 1 target, 21 features, split and is_modelable",
+      "unit": ""
+    },
+    {
+      "kind": "metric",
+      "step": "Reduce the panel to the contract columns",
+      "label": "dropped - reserve (D-17)",
+      "value": 30,
+      "unit": ""
+    },
+    {
+      "kind": "metric",
+      "step": "Reduce the panel to the contract columns",
+      "label": "dropped - passthrough",
+      "value": 9,
+      "unit": ""
+    },
+    {
+      "kind": "metric",
+      "step": "Reduce the panel to the contract columns",
+      "label": "dropped - row flags",
+      "value": 3,
+      "unit": ""
+    },
+    {
+      "kind": "metric",
+      "step": "Reduce the panel to the contract columns",
+      "label": "dropped - other",
+      "value": 2,
+      "unit": ""
+    },
+    {
+      "kind": "check",
+      "step": "Reduce the panel to the contract columns",
+      "name": "no forbidden column left in the panel",
+      "ok": true,
+      "detail": "the measurement columns that sum to the target are gone",
+      "hard": true
+    },
+    {
+      "kind": "check",
+      "step": "Reduce the panel to the contract columns",
+      "name": "row count unchanged by the reduction",
+      "ok": true,
+      "detail": "82,051 rows",
+      "hard": true
+    },
+    {
+      "kind": "note",
+      "step": "Reduce the panel to the contract columns",
+      "text": "Dropped, reserve (D-17): Pressure_BarometricHeight_avg_hourly_mean, Survey_Building_LivingArea, Survey_Building_Residents, Survey_Building_Type, Survey_DHW_Production_ByElectricWaterHeater, Survey_DHW_Production_ByHeatPump, Survey_DHW_Production_BySolar, Survey_HeatDistribution_System_FloorHeating, Survey_HeatDistribution_System_Radiator, Survey_HeatPump_Installation_Type, Survey_Installation_HasDryer, Survey_Installation_HasElectricVehicle, Survey_Installation_HasFreezer, Temperature_avg_hourly_mean_roll7_mean, WindSpeed_hourly_max, days_since_visit, doy_cos, doy_sin, has_heatpump_submeter, has_meta_survey, hdd_15_roll7_mean, is_visit_day, pv_flag_imputed, recv_lag14, recv_lag3, recv_lag9, recv_roll28_mean, recv_roll28_std, station_has_pressure, station_has_sunshine"
+    },
+    {
+      "kind": "note",
+      "step": "Reduce the panel to the contract columns",
+      "text": "Dropped, passthrough: kWh_received_HeatPump, kWh_received_Other, kWh_returned_Total, kvarh_received_capacitive_HeatPump, kvarh_received_capacitive_Other, kvarh_received_capacitive_Total, kvarh_received_inductive_HeatPump, kvarh_received_inductive_Other, kvarh_received_inductive_Total"
+    },
+    {
+      "kind": "note",
+      "step": "Reduce the panel to the contract columns",
+      "text": "Dropped, row flags: is_gap, kWh_spike_flag, returned_was_substituted"
+    },
+    {
+      "kind": "note",
+      "step": "Reduce the panel to the contract columns",
+      "text": "Dropped, other: Timestamp, visit_date"
+    },
+    {
+      "kind": "note",
+      "step": "Reduce the panel to the contract columns",
+      "text": "The dropped columns were computed and checked as before - the run is identical up to this point, only the writing is conditional. config.PANEL_SLIM = False plus one run (about two seconds) restores them, which is what makes the ablation experiment from D-17 affordable despite the reduction"
+    },
+    {
+      "kind": "note",
+      "step": "Reduce the panel to the contract columns",
+      "text": "The survey attributes remain available without any rerun: they live in 02_clean/households.parquet with one row per household (153 x 39) and join back over Household_ID. That is also the better source for segmentation, because it weights every household once instead of once per day - see D-20"
+    },
+    {
+      "kind": "note",
+      "step": "Reduce the panel to the contract columns",
+      "text": "Not recoverable by a join, only by a rerun: the computed reserve features (recv_lag3/9/14, recv_roll28_*, doy_sin/cos, the rolling weather windows, pressure, WindSpeed_hourly_max, days_since_visit, is_visit_day) and the passthrough measurements used for the PV cross-check in D-20"
+    },
+    {
+      "kind": "step",
+      "name": "Write the panel"
+    },
+    {
+      "kind": "metric",
+      "step": "Write the panel",
+      "label": "model_table.parquet",
+      "value": "82,051 rows x 26 columns",
+      "unit": ""
+    },
+    {
+      "kind": "step",
+      "name": "Write the split frames"
+    },
+    {
+      "kind": "check",
+      "step": "Write the split frames",
+      "name": "every contract column exists for the split frames",
+      "ok": true,
+      "detail": "missing: []",
+      "hard": true
+    },
+    {
+      "kind": "metric",
+      "step": "Write the split frames",
+      "label": "panel_train.parquet",
+      "value": "65,502 rows x 24 columns",
+      "unit": ""
+    },
+    {
+      "kind": "check",
+      "step": "Write the split frames",
+      "name": "panel_train.parquet without a gap in gross_load",
+      "ok": true,
+      "detail": "65,502 rows, all labelled",
+      "hard": true
+    },
+    {
+      "kind": "metric",
+      "step": "Write the split frames",
+      "label": "panel_test.parquet",
+      "value": "15,583 rows x 24 columns",
+      "unit": ""
+    },
+    {
+      "kind": "check",
+      "step": "Write the split frames",
+      "name": "panel_test.parquet without a gap in gross_load",
+      "ok": true,
+      "detail": "15,583 rows, all labelled",
+      "hard": true
+    },
+    {
+      "kind": "check",
+      "step": "Write the split frames",
+      "name": "the test frame starts strictly after the training frame",
+      "ok": true,
+      "detail": "2023-06-30 < 2023-07-01",
+      "hard": true
+    },
+    {
+      "kind": "check",
+      "step": "Write the split frames",
+      "name": "weather_id carries the same categories in both files",
+      "ok": true,
+      "detail": "8 levels",
+      "hard": true
+    },
+    {
+      "kind": "check",
+      "step": "Write the split frames",
+      "name": "season carries the same categories in both files",
+      "ok": true,
+      "detail": "4 levels",
+      "hard": true
+    },
+    {
+      "kind": "metric",
+      "step": "Write the split frames",
+      "label": "Rows dropped as unlabelled",
+      "value": 966,
+      "unit": ""
+    },
+    {
+      "kind": "note",
+      "step": "Write the split frames",
+      "text": "Rows are restricted to is_modelable - the target value is present (D-19). The flag itself is not carried along, so the filter has to be applied here: a y with holes and no column left to detect them would be worse than the 966 missing rows"
+    },
+    {
+      "kind": "note",
+      "step": "Write the split frames",
+      "text": "split is not a column of these files - it is the file name. The panel keeps both it and is_modelable, so the two frames stay derivable from it and nothing is stored twice for a different purpose"
+    },
+    {
+      "kind": "note",
+      "step": "Write the split frames",
+      "text": "Categorical levels were checked for equality across the two files. Derived per frame they could diverge, and a code would then mean a different station in train than in test - a failure that shows up as a slightly worse metric, never as an error"
+    },
+    {
+      "kind": "step",
+      "name": "Write the schema"
+    },
+    {
+      "kind": "metric",
+      "step": "Write the schema",
+      "label": "model_table_schema.json",
+      "value": "5 feature groups, 21 active features",
+      "unit": ""
+    },
+    {
+      "kind": "note",
+      "step": "Write the schema",
+      "text": "The modeling stage builds its feature list from preselection.features in the schema, never from panel.columns: kWh_received_HeatPump and kWh_received_Other sum to the target exactly, so a naive 'everything except gross_load' would be reading the answer"
+    },
+    {
+      "kind": "note",
+      "step": "Write the schema",
+      "text": "Output directory: data\\processed"
+    }
+  ],
+  "n_failures": 0
+}

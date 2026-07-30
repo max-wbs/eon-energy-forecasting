@@ -1,0 +1,703 @@
+{
+  "stage": 2,
+  "title": "Cleaning & Validation",
+  "started_at": "2026-07-30T11:50:28+00:00",
+  "finished_at": "2026-07-30T11:50:30+00:00",
+  "status": "ok",
+  "error": null,
+  "entries": [
+    {
+      "kind": "step",
+      "name": "Read the results of stage 1"
+    },
+    {
+      "kind": "metric",
+      "step": "Read the results of stage 1",
+      "label": "Smart meter rows",
+      "value": 85464,
+      "unit": ""
+    },
+    {
+      "kind": "metric",
+      "step": "Read the results of stage 1",
+      "label": "Households",
+      "value": 153,
+      "unit": ""
+    },
+    {
+      "kind": "metric",
+      "step": "Read the results of stage 1",
+      "label": "Weather hourly rows",
+      "value": 362112,
+      "unit": ""
+    },
+    {
+      "kind": "note",
+      "step": "Read the results of stage 1",
+      "text": "Source: data\\interim\\01_ingested (stage-1 output only, no raw data)"
+    },
+    {
+      "kind": "step",
+      "name": "Flag outliers"
+    },
+    {
+      "kind": "metric",
+      "step": "Flag outliers",
+      "label": "Flagged as outliers",
+      "value": 564,
+      "unit": ""
+    },
+    {
+      "kind": "metric",
+      "step": "Flag outliers",
+      "label": "Households affected",
+      "value": 61,
+      "unit": ""
+    },
+    {
+      "kind": "metric",
+      "step": "Flag outliers",
+      "label": "Share of observed rows",
+      "value": 0.6674714194418803,
+      "unit": "%"
+    },
+    {
+      "kind": "note",
+      "step": "Flag outliers",
+      "text": "Threshold: median + 5 x MAD per household. The values stay unchanged, only the marker is passed on"
+    },
+    {
+      "kind": "step",
+      "name": "Feed-in: separate structural empty cells from measurement gaps"
+    },
+    {
+      "kind": "metric",
+      "step": "Feed-in: separate structural empty cells from measurement gaps",
+      "label": "Households with positive feed-in",
+      "value": 37,
+      "unit": ""
+    },
+    {
+      "kind": "metric",
+      "step": "Feed-in: separate structural empty cells from measurement gaps",
+      "label": "Households without any feed-in",
+      "value": 116,
+      "unit": ""
+    },
+    {
+      "kind": "metric",
+      "step": "Feed-in: separate structural empty cells from measurement gaps",
+      "label": "Substituted cells (set to 0.0)",
+      "value": 57460,
+      "unit": ""
+    },
+    {
+      "kind": "metric",
+      "step": "Feed-in: separate structural empty cells from measurement gaps",
+      "label": "Remaining genuine measurement gaps",
+      "value": 13816,
+      "unit": ""
+    },
+    {
+      "kind": "note",
+      "step": "Feed-in: separate structural empty cells from measurement gaps",
+      "text": "Active feeders keep their NaN - there an empty cell is a measurement gap, not a zero value"
+    },
+    {
+      "kind": "step",
+      "name": "Check the PV flag against the feed-in evidence"
+    },
+    {
+      "kind": "metric",
+      "step": "Check the PV flag against the feed-in evidence",
+      "label": "PV flag True and feed-in evidenced",
+      "value": 37,
+      "unit": ""
+    },
+    {
+      "kind": "metric",
+      "step": "Check the PV flag against the feed-in evidence",
+      "label": "PV flag True, but no feed-in",
+      "value": 2,
+      "unit": ""
+    },
+    {
+      "kind": "metric",
+      "step": "Check the PV flag against the feed-in evidence",
+      "label": "PV flag False, but feed-in evidenced",
+      "value": 0,
+      "unit": ""
+    },
+    {
+      "kind": "note",
+      "step": "Check the PV flag against the feed-in evidence",
+      "text": "PV according to the master data, without feed-in in the data: 7374981, 1211151 - possibly a measurement gap or a system installed after the metering period"
+    },
+    {
+      "kind": "check",
+      "step": "Check the PV flag against the feed-in evidence",
+      "name": "no household feeds in without being listed as a PV owner",
+      "ok": true,
+      "detail": "",
+      "hard": false
+    },
+    {
+      "kind": "note",
+      "step": "Check the PV flag against the feed-in evidence",
+      "text": "PV status of household 877881 was unknown and is set to False based on the feed-in evidence (flag: pv_flag_imputed)"
+    },
+    {
+      "kind": "step",
+      "name": "Make the calendar gapless per household"
+    },
+    {
+      "kind": "metric",
+      "step": "Make the calendar gapless per household",
+      "label": "Rows before",
+      "value": 85464,
+      "unit": ""
+    },
+    {
+      "kind": "metric",
+      "step": "Make the calendar gapless per household",
+      "label": "Inserted gap rows",
+      "value": 1347,
+      "unit": ""
+    },
+    {
+      "kind": "metric",
+      "step": "Make the calendar gapless per household",
+      "label": "Rows after",
+      "value": 86811,
+      "unit": ""
+    },
+    {
+      "kind": "metric",
+      "step": "Make the calendar gapless per household",
+      "label": "Households with gaps",
+      "value": 39,
+      "unit": ""
+    },
+    {
+      "kind": "metric",
+      "step": "Make the calendar gapless per household",
+      "label": "Largest gap total per household",
+      "value": 333,
+      "unit": "days"
+    },
+    {
+      "kind": "note",
+      "step": "Make the calendar gapless per household",
+      "text": "Households with the most gap days: 861116 (333), 611629 (246), 699801 (185), 881223 (136), 712718 (87)"
+    },
+    {
+      "kind": "check",
+      "step": "Make the calendar gapless per household",
+      "name": "households with gaps as documented",
+      "ok": true,
+      "detail": "39 households (41 in the raw data, two of them removed)",
+      "hard": false
+    },
+    {
+      "kind": "note",
+      "step": "Make the calendar gapless per household",
+      "text": "The target value in gap rows stays NaN - the rows establish the grid, they do not fill it"
+    },
+    {
+      "kind": "step",
+      "name": "Derive regime features from the visit state"
+    },
+    {
+      "kind": "metric",
+      "step": "Derive regime features from the visit state",
+      "label": "Households with a known visit date",
+      "value": 55,
+      "unit": ""
+    },
+    {
+      "kind": "metric",
+      "step": "Derive regime features from the visit state",
+      "label": "Households without a known visit date",
+      "value": 98,
+      "unit": ""
+    },
+    {
+      "kind": "metric",
+      "step": "Derive regime features from the visit state",
+      "label": "Rows in state 'after visit'",
+      "value": 22667,
+      "unit": ""
+    },
+    {
+      "kind": "metric",
+      "step": "Derive regime features from the visit state",
+      "label": "Rows in state 'before visit'",
+      "value": 64128,
+      "unit": ""
+    },
+    {
+      "kind": "metric",
+      "step": "Derive regime features from the visit state",
+      "label": "Rows with an unknown state",
+      "value": 16,
+      "unit": ""
+    },
+    {
+      "kind": "metric",
+      "step": "Derive regime features from the visit state",
+      "label": "Gap rows with a carried-forward state",
+      "value": 1347,
+      "unit": ""
+    },
+    {
+      "kind": "check",
+      "step": "Derive regime features from the visit state",
+      "name": "visit day at most once per household",
+      "ok": true,
+      "detail": "",
+      "hard": true
+    },
+    {
+      "kind": "check",
+      "step": "Derive regime features from the visit state",
+      "name": "households with a known visit date as documented",
+      "ok": true,
+      "detail": "55 households (56 in the raw data, one of them removed)",
+      "hard": false
+    },
+    {
+      "kind": "check",
+      "step": "Derive regime features from the visit state",
+      "name": "days_since_visit set only where the visit date is known",
+      "ok": true,
+      "detail": "",
+      "hard": true
+    },
+    {
+      "kind": "note",
+      "step": "Derive regime features from the visit state",
+      "text": "days_since_visit stays NaN where the visit date is unknown; is_post_visit is three-valued so that the state 'unknown' does not become 'before visit'"
+    },
+    {
+      "kind": "step",
+      "name": "Validate the smart meter data"
+    },
+    {
+      "kind": "check",
+      "step": "Validate the smart meter data",
+      "name": "(Household_ID, date) unique",
+      "ok": true,
+      "detail": "",
+      "hard": true
+    },
+    {
+      "kind": "check",
+      "step": "Validate the smart meter data",
+      "name": "daily grid gapless (precondition for all shift features)",
+      "ok": true,
+      "detail": "153 groups gapless",
+      "hard": true
+    },
+    {
+      "kind": "check",
+      "step": "Validate the smart meter data",
+      "name": "no negative measurements",
+      "ok": true,
+      "detail": "10 columns checked",
+      "hard": true
+    },
+    {
+      "kind": "check",
+      "step": "Validate the smart meter data",
+      "name": "total equals HeatPump + Other where submetering exists",
+      "ok": true,
+      "detail": "3355 rows with submetering, maximum deviation 0.00 kWh, 0 rows above the tolerance of 0.5 kWh",
+      "hard": false
+    },
+    {
+      "kind": "metric",
+      "step": "Validate the smart meter data",
+      "label": "Households with heat-pump submetering",
+      "value": 7,
+      "unit": ""
+    },
+    {
+      "kind": "check",
+      "step": "Validate the smart meter data",
+      "name": "submetering coverage as documented",
+      "ok": true,
+      "detail": "7 households (10 in the raw data - the three removed households meter the heat pump only)",
+      "hard": false
+    },
+    {
+      "kind": "metric",
+      "step": "Validate the smart meter data",
+      "label": "Rows without a target value (incl. gaps)",
+      "value": 2313,
+      "unit": ""
+    },
+    {
+      "kind": "metric",
+      "step": "Validate the smart meter data",
+      "label": "Rows with a target value",
+      "value": 84498,
+      "unit": ""
+    },
+    {
+      "kind": "step",
+      "name": "Extend the master data with quality metrics"
+    },
+    {
+      "kind": "check",
+      "step": "Extend the master data with quality metrics",
+      "name": "enrichment multiplies no rows",
+      "ok": true,
+      "detail": "master data x quality statistics: 153 -> 153 rows",
+      "hard": true
+    },
+    {
+      "kind": "metric",
+      "step": "Extend the master data with quality metrics",
+      "label": "Median days per household",
+      "value": 488,
+      "unit": ""
+    },
+    {
+      "kind": "metric",
+      "step": "Extend the master data with quality metrics",
+      "label": "Households with fewer than 365 days",
+      "value": 57,
+      "unit": ""
+    },
+    {
+      "kind": "metric",
+      "step": "Extend the master data with quality metrics",
+      "label": "Longest single gap across all households",
+      "value": 333,
+      "unit": "days"
+    },
+    {
+      "kind": "metric",
+      "step": "Extend the master data with quality metrics",
+      "label": "Mean missing rate of the target value",
+      "value": 1.766328747819838,
+      "unit": "%"
+    },
+    {
+      "kind": "step",
+      "name": "Validate the weather data hourly"
+    },
+    {
+      "kind": "check",
+      "step": "Validate the weather data hourly",
+      "name": "(Weather_ID, Timestamp) unique",
+      "ok": true,
+      "detail": "",
+      "hard": true
+    },
+    {
+      "kind": "check",
+      "step": "Validate the weather data hourly",
+      "name": "hourly grid gapless (precondition for the daily aggregation)",
+      "ok": true,
+      "detail": "8 stations gapless hourly",
+      "hard": true
+    },
+    {
+      "kind": "check",
+      "step": "Validate the weather data hourly",
+      "name": "weather values within plausible bounds",
+      "ok": true,
+      "detail": "9 value ranges checked",
+      "hard": true
+    },
+    {
+      "kind": "step",
+      "name": "Remove redundant pressure channels"
+    },
+    {
+      "kind": "metric",
+      "step": "Remove redundant pressure channels",
+      "label": "Stations with values in Pressure_BarometricHeight_avg_hourly",
+      "value": 5,
+      "unit": ""
+    },
+    {
+      "kind": "metric",
+      "step": "Remove redundant pressure channels",
+      "label": "Stations with values in Pressure_SeaLevelStandardAtmosphere_avg_hourly",
+      "value": 5,
+      "unit": ""
+    },
+    {
+      "kind": "metric",
+      "step": "Remove redundant pressure channels",
+      "label": "Stations with values in Pressure_SeaLevel_avg_hourly",
+      "value": 4,
+      "unit": ""
+    },
+    {
+      "kind": "note",
+      "step": "Remove redundant pressure channels",
+      "text": "Pressure_BarometricHeight_avg_hourly is carried forward; the other channels are conversions of the same measurement and carry no additional information at equal or worse coverage"
+    },
+    {
+      "kind": "step",
+      "name": "Forward-fill short hourly gaps"
+    },
+    {
+      "kind": "metric",
+      "step": "Forward-fill short hourly gaps",
+      "label": "Hourly values filled in total",
+      "value": 447,
+      "unit": ""
+    },
+    {
+      "kind": "metric",
+      "step": "Forward-fill short hourly gaps",
+      "label": "  Temperature_avg_hourly",
+      "value": 88,
+      "unit": ""
+    },
+    {
+      "kind": "metric",
+      "step": "Forward-fill short hourly gaps",
+      "label": "  DewPoint_hourly",
+      "value": 166,
+      "unit": ""
+    },
+    {
+      "kind": "metric",
+      "step": "Forward-fill short hourly gaps",
+      "label": "  Humidity_avg_hourly",
+      "value": 91,
+      "unit": ""
+    },
+    {
+      "kind": "metric",
+      "step": "Forward-fill short hourly gaps",
+      "label": "  WindSpeed_hourly",
+      "value": 102,
+      "unit": ""
+    },
+    {
+      "kind": "metric",
+      "step": "Forward-fill short hourly gaps",
+      "label": "Structurally not measured (station does not carry the channel)",
+      "value": 135792,
+      "unit": ""
+    },
+    {
+      "kind": "metric",
+      "step": "Forward-fill short hourly gaps",
+      "label": "Genuine remaining gaps (station measures, value missing)",
+      "value": 3730,
+      "unit": ""
+    },
+    {
+      "kind": "note",
+      "step": "Forward-fill short hourly gaps",
+      "text": "Forward fill with a limit of 3 h, exclusively with values before the gap. Precipitation and sunshine are not filled - they are spiky, and carrying them forward would invent rain that never fell"
+    },
+    {
+      "kind": "step",
+      "name": "Aggregate the weather to daily level"
+    },
+    {
+      "kind": "metric",
+      "step": "Aggregate the weather to daily level",
+      "label": "Hourly rows in",
+      "value": 362112,
+      "unit": ""
+    },
+    {
+      "kind": "metric",
+      "step": "Aggregate the weather to daily level",
+      "label": "Daily rows out",
+      "value": 15088,
+      "unit": ""
+    },
+    {
+      "kind": "metric",
+      "step": "Aggregate the weather to daily level",
+      "label": "Stations",
+      "value": 8,
+      "unit": ""
+    },
+    {
+      "kind": "metric",
+      "step": "Aggregate the weather to daily level",
+      "label": "Days with a full 24 hourly rows",
+      "value": 15088,
+      "unit": ""
+    },
+    {
+      "kind": "check",
+      "step": "Aggregate the weather to daily level",
+      "name": "every day has 24 hourly rows",
+      "ok": true,
+      "detail": "0 days with a deviating hour count",
+      "hard": true
+    },
+    {
+      "kind": "metric",
+      "step": "Aggregate the weather to daily level",
+      "label": "Temperature_avg_hourly: full-day outages / partial outages",
+      "value": "10 / 22",
+      "unit": ""
+    },
+    {
+      "kind": "metric",
+      "step": "Aggregate the weather to daily level",
+      "label": "DewPoint_hourly: full-day outages / partial outages",
+      "value": "10 / 24",
+      "unit": ""
+    },
+    {
+      "kind": "metric",
+      "step": "Aggregate the weather to daily level",
+      "label": "Humidity_avg_hourly: full-day outages / partial outages",
+      "value": "10 / 24",
+      "unit": ""
+    },
+    {
+      "kind": "metric",
+      "step": "Aggregate the weather to daily level",
+      "label": "WindSpeed_hourly: full-day outages / partial outages",
+      "value": "61 / 45",
+      "unit": ""
+    },
+    {
+      "kind": "metric",
+      "step": "Aggregate the weather to daily level",
+      "label": "Pressure_BarometricHeight_avg_hourly: channel not carried at the station",
+      "value": 5658,
+      "unit": "station days"
+    },
+    {
+      "kind": "metric",
+      "step": "Aggregate the weather to daily level",
+      "label": "Precipitation_total_hourly: full-day outages / partial outages",
+      "value": "45 / 53",
+      "unit": ""
+    },
+    {
+      "kind": "metric",
+      "step": "Aggregate the weather to daily level",
+      "label": "Sunshine_duration_hourly: full-day outages / partial outages",
+      "value": "0 / 1",
+      "unit": ""
+    },
+    {
+      "kind": "metric",
+      "step": "Aggregate the weather to daily level",
+      "label": "Sunshine_duration_hourly: channel not carried at the station",
+      "value": 5658,
+      "unit": "station days"
+    },
+    {
+      "kind": "metric",
+      "step": "Aggregate the weather to daily level",
+      "label": "Daily rows with an incomplete data basis",
+      "value": 218,
+      "unit": ""
+    },
+    {
+      "kind": "note",
+      "step": "Aggregate the weather to daily level",
+      "text": "A daily value is only formed from at least 20 valid hours, otherwise NaN. This also catches a trap of sum aggregation: `sum` over all-missing hours returns 0.0, not NaN - without the mask the three stations without sunshine measurement would show exactly zero minutes of sun every day, an invented measurement"
+    },
+    {
+      "kind": "note",
+      "step": "Aggregate the weather to daily level",
+      "text": "11316 station days concern channels the respective station does not carry at all (sunshine and pressure at three stations) - a known property, marked via station_has_*. To be distinguished from those are 136 genuine full-day outages and 169 partial outages at stations that do carry the channel; only these set weather_day_incomplete"
+    },
+    {
+      "kind": "metric",
+      "step": "Aggregate the weather to daily level",
+      "label": "Heating degree days mean",
+      "value": 6.010284435566282,
+      "unit": ""
+    },
+    {
+      "kind": "metric",
+      "step": "Aggregate the weather to daily level",
+      "label": "Days with HDD equal to 0",
+      "value": 4566,
+      "unit": ""
+    },
+    {
+      "kind": "note",
+      "step": "Aggregate the weather to daily level",
+      "text": "hdd_15 = max(0, 15 - daily mean temperature); NaN parity with the temperature, no filling. The base temperature is part of the column name and changeable in config.py in one place - the name follows along"
+    },
+    {
+      "kind": "metric",
+      "step": "Aggregate the weather to daily level",
+      "label": "Stations without sunshine",
+      "value": 3,
+      "unit": ""
+    },
+    {
+      "kind": "metric",
+      "step": "Aggregate the weather to daily level",
+      "label": "Stations without pressure",
+      "value": 3,
+      "unit": ""
+    },
+    {
+      "kind": "check",
+      "step": "Aggregate the weather to daily level",
+      "name": "(Weather_ID, date) unique in the daily aggregate",
+      "ok": true,
+      "detail": "",
+      "hard": true
+    },
+    {
+      "kind": "step",
+      "name": "Write results as parquet"
+    },
+    {
+      "kind": "metric",
+      "step": "Write results as parquet",
+      "label": "smart_meter_daily.parquet",
+      "value": "86,811 rows x 20 columns",
+      "unit": ""
+    },
+    {
+      "kind": "metric",
+      "step": "Write results as parquet",
+      "label": "households.parquet",
+      "value": "153 rows x 39 columns",
+      "unit": ""
+    },
+    {
+      "kind": "metric",
+      "step": "Write results as parquet",
+      "label": "weather_hourly.parquet",
+      "value": "362,112 rows x 10 columns",
+      "unit": ""
+    },
+    {
+      "kind": "metric",
+      "step": "Write results as parquet",
+      "label": "weather_daily.parquet",
+      "value": "15,088 rows x 16 columns",
+      "unit": ""
+    },
+    {
+      "kind": "check",
+      "step": "Write results as parquet",
+      "name": "Parquet round trip without dtype drift",
+      "ok": true,
+      "detail": "verified for all four tables",
+      "hard": true
+    },
+    {
+      "kind": "note",
+      "step": "Write results as parquet",
+      "text": "Metrics machine-readable in data\\interim\\quality_report.json"
+    }
+  ],
+  "n_failures": 0
+}

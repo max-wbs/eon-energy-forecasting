@@ -1,0 +1,546 @@
+{
+  "stage": 1,
+  "title": "Load & Type",
+  "started_at": "2026-07-30T11:50:22+00:00",
+  "finished_at": "2026-07-30T11:50:24+00:00",
+  "status": "ok",
+  "error": null,
+  "entries": [
+    {
+      "kind": "step",
+      "name": "Read smart meter daily data"
+    },
+    {
+      "kind": "check",
+      "step": "Read smart meter daily data",
+      "name": "File-count gate",
+      "ok": true,
+      "detail": "156 files found, 156 expected",
+      "hard": true
+    },
+    {
+      "kind": "check",
+      "step": "Read smart meter daily data",
+      "name": "Header gate",
+      "ok": true,
+      "detail": "all 156 files with 14 columns",
+      "hard": true
+    },
+    {
+      "kind": "metric",
+      "step": "Read smart meter daily data",
+      "label": "Files",
+      "value": 156,
+      "unit": ""
+    },
+    {
+      "kind": "metric",
+      "step": "Read smart meter daily data",
+      "label": "Rows",
+      "value": 88791,
+      "unit": ""
+    },
+    {
+      "kind": "metric",
+      "step": "Read smart meter daily data",
+      "label": "Households",
+      "value": 156,
+      "unit": ""
+    },
+    {
+      "kind": "metric",
+      "step": "Read smart meter daily data",
+      "label": "Period from",
+      "value": "2018-11-02",
+      "unit": ""
+    },
+    {
+      "kind": "metric",
+      "step": "Read smart meter daily data",
+      "label": "Period to",
+      "value": "2024-03-20",
+      "unit": ""
+    },
+    {
+      "kind": "check",
+      "step": "Read smart meter daily data",
+      "name": "Row count as documented",
+      "ok": true,
+      "detail": "88791 rows, 88791 documented",
+      "hard": false
+    },
+    {
+      "kind": "step",
+      "name": "Check identity and timestamps"
+    },
+    {
+      "kind": "check",
+      "step": "Check identity and timestamps",
+      "name": "Household_ID matches the file name",
+      "ok": true,
+      "detail": "",
+      "hard": true
+    },
+    {
+      "kind": "check",
+      "step": "Check identity and timestamps",
+      "name": "all timestamps at 23:59:59 UTC",
+      "ok": true,
+      "detail": "end of day uniform",
+      "hard": true
+    },
+    {
+      "kind": "check",
+      "step": "Check identity and timestamps",
+      "name": "(Household_ID, date) unique",
+      "ok": true,
+      "detail": "",
+      "hard": true
+    },
+    {
+      "kind": "check",
+      "step": "Check identity and timestamps",
+      "name": "Group only with known values",
+      "ok": true,
+      "detail": "values encountered: ['treatment']",
+      "hard": false
+    },
+    {
+      "kind": "step",
+      "name": "Check the visit state (AffectsTimePoint)"
+    },
+    {
+      "kind": "metric",
+      "step": "Check the visit state (AffectsTimePoint)",
+      "label": "Rows 'before visit'",
+      "value": 65364,
+      "unit": ""
+    },
+    {
+      "kind": "metric",
+      "step": "Check the visit state (AffectsTimePoint)",
+      "label": "Rows 'during visit'",
+      "value": 56,
+      "unit": ""
+    },
+    {
+      "kind": "metric",
+      "step": "Check the visit state (AffectsTimePoint)",
+      "label": "Rows 'after visit'",
+      "value": 23355,
+      "unit": ""
+    },
+    {
+      "kind": "metric",
+      "step": "Check the visit state (AffectsTimePoint)",
+      "label": "Rows 'unknown'",
+      "value": 16,
+      "unit": ""
+    },
+    {
+      "kind": "check",
+      "step": "Check the visit state (AffectsTimePoint)",
+      "name": "known states only",
+      "ok": true,
+      "detail": "['after visit', 'before visit', 'during visit', 'unknown']",
+      "hard": true
+    },
+    {
+      "kind": "check",
+      "step": "Check the visit state (AffectsTimePoint)",
+      "name": "AffectsTimePoint without gaps",
+      "ok": true,
+      "detail": "",
+      "hard": true
+    },
+    {
+      "kind": "metric",
+      "step": "Check the visit state (AffectsTimePoint)",
+      "label": "Households with a visit day inside the data window",
+      "value": 56,
+      "unit": ""
+    },
+    {
+      "kind": "check",
+      "step": "Check the visit state (AffectsTimePoint)",
+      "name": "'during visit' at most one day per household",
+      "ok": true,
+      "detail": "at most 1 days",
+      "hard": true
+    },
+    {
+      "kind": "check",
+      "step": "Check the visit state (AffectsTimePoint)",
+      "name": "progression per household monotone (no relapse to before the visit)",
+      "ok": true,
+      "detail": "",
+      "hard": true
+    },
+    {
+      "kind": "note",
+      "step": "Check the visit state (AffectsTimePoint)",
+      "text": "78 households: before visit"
+    },
+    {
+      "kind": "note",
+      "step": "Check the visit state (AffectsTimePoint)",
+      "text": "56 households: before visit -> during visit -> after visit"
+    },
+    {
+      "kind": "note",
+      "step": "Check the visit state (AffectsTimePoint)",
+      "text": "21 households: after visit"
+    },
+    {
+      "kind": "note",
+      "step": "Check the visit state (AffectsTimePoint)",
+      "text": "1 households: before visit -> unknown"
+    },
+    {
+      "kind": "check",
+      "step": "Check the visit state (AffectsTimePoint)",
+      "name": "progression patterns as documented",
+      "ok": true,
+      "detail": "4 distinct patterns",
+      "hard": false
+    },
+    {
+      "kind": "note",
+      "step": "Check the visit state (AffectsTimePoint)",
+      "text": "Consequence for stage 2: 'during visit' is a transition day and gets its own flag; households with 'after visit' only had their visit before recording started, so their visit date is unknown"
+    },
+    {
+      "kind": "step",
+      "name": "Remove households without a target value"
+    },
+    {
+      "kind": "metric",
+      "step": "Remove households without a target value",
+      "label": "Missing target values in total",
+      "value": 4293,
+      "unit": ""
+    },
+    {
+      "kind": "metric",
+      "step": "Remove households without a target value",
+      "label": "Households without any target value",
+      "value": 3,
+      "unit": ""
+    },
+    {
+      "kind": "note",
+      "step": "Remove households without a target value",
+      "text": "Household 747511 removed: 770 rows, not a single target value"
+    },
+    {
+      "kind": "note",
+      "step": "Remove households without a target value",
+      "text": "Household 768498 removed: 734 rows, not a single target value"
+    },
+    {
+      "kind": "note",
+      "step": "Remove households without a target value",
+      "text": "Household 996610 removed: 1823 rows, not a single target value"
+    },
+    {
+      "kind": "check",
+      "step": "Remove households without a target value",
+      "name": "removed households as documented",
+      "ok": true,
+      "detail": "removed: ['747511', '768498', '996610']",
+      "hard": false
+    },
+    {
+      "kind": "metric",
+      "step": "Remove households without a target value",
+      "label": "Rows after the drop",
+      "value": 85464,
+      "unit": ""
+    },
+    {
+      "kind": "metric",
+      "step": "Remove households without a target value",
+      "label": "Households after the drop",
+      "value": 153,
+      "unit": ""
+    },
+    {
+      "kind": "check",
+      "step": "Remove households without a target value",
+      "name": "household count after the drop as documented",
+      "ok": true,
+      "detail": "153 households",
+      "hard": false
+    },
+    {
+      "kind": "note",
+      "step": "Remove households without a target value",
+      "text": "kept, but with a very short history (< 30 target values): 109104 (22), 461104 (21), 7086681 (5)"
+    },
+    {
+      "kind": "step",
+      "name": "Read and merge master data"
+    },
+    {
+      "kind": "metric",
+      "step": "Read and merge master data",
+      "label": "households.csv rows",
+      "value": 156,
+      "unit": ""
+    },
+    {
+      "kind": "metric",
+      "step": "Read and merge master data",
+      "label": "meta_data.csv rows",
+      "value": 142,
+      "unit": ""
+    },
+    {
+      "kind": "check",
+      "step": "Read and merge master data",
+      "name": "households.csv row count as documented",
+      "ok": true,
+      "detail": "156 rows",
+      "hard": false
+    },
+    {
+      "kind": "check",
+      "step": "Read and merge master data",
+      "name": "meta_data.csv covers only part of the households",
+      "ok": true,
+      "detail": "142 of 156 households with survey data",
+      "hard": false
+    },
+    {
+      "kind": "check",
+      "step": "Read and merge master data",
+      "name": "Household_ID unique in households.csv",
+      "ok": true,
+      "detail": "",
+      "hard": true
+    },
+    {
+      "kind": "check",
+      "step": "Read and merge master data",
+      "name": "Household_ID unique in meta_data.csv",
+      "ok": true,
+      "detail": "",
+      "hard": true
+    },
+    {
+      "kind": "check",
+      "step": "Read and merge master data",
+      "name": "every meta ID exists in households.csv",
+      "ok": true,
+      "detail": "",
+      "hard": true
+    },
+    {
+      "kind": "metric",
+      "step": "Read and merge master data",
+      "label": "PV flag True",
+      "value": 39,
+      "unit": ""
+    },
+    {
+      "kind": "metric",
+      "step": "Read and merge master data",
+      "label": "PV flag unknown",
+      "value": 1,
+      "unit": ""
+    },
+    {
+      "kind": "check",
+      "step": "Read and merge master data",
+      "name": "PV flags as documented",
+      "ok": true,
+      "detail": "39 True, 1 unknown",
+      "hard": false
+    },
+    {
+      "kind": "note",
+      "step": "Read and merge master data",
+      "text": "PV status unknown for ['877881'] - stays <NA>; resolution via feed-in evidence happens in stage 2"
+    },
+    {
+      "kind": "check",
+      "step": "Read and merge master data",
+      "name": "left join households x meta multiplies no rows",
+      "ok": true,
+      "detail": "156 -> 156",
+      "hard": true
+    },
+    {
+      "kind": "metric",
+      "step": "Read and merge master data",
+      "label": "Master data rows after the drop",
+      "value": 153,
+      "unit": ""
+    },
+    {
+      "kind": "metric",
+      "step": "Read and merge master data",
+      "label": "Households with survey data",
+      "value": 139,
+      "unit": ""
+    },
+    {
+      "kind": "metric",
+      "step": "Read and merge master data",
+      "label": "Households without survey data",
+      "value": 14,
+      "unit": ""
+    },
+    {
+      "kind": "note",
+      "step": "Read and merge master data",
+      "text": "3 of the removed households had survey data; of the 153 remaining ones, 139 have a survey record"
+    },
+    {
+      "kind": "note",
+      "step": "Read and merge master data",
+      "text": "Empty survey booleans stay <NA> (unknown), they do not become False - an unanswered question is not a denial"
+    },
+    {
+      "kind": "check",
+      "step": "Read and merge master data",
+      "name": "master table covers exactly the remaining households",
+      "ok": true,
+      "detail": "156 -> 153 rows, 153 households in the meter frame",
+      "hard": true
+    },
+    {
+      "kind": "step",
+      "name": "Read hourly weather data"
+    },
+    {
+      "kind": "check",
+      "step": "Read hourly weather data",
+      "name": "Station-count gate",
+      "ok": true,
+      "detail": "8 stations found",
+      "hard": true
+    },
+    {
+      "kind": "check",
+      "step": "Read hourly weather data",
+      "name": "Header gate",
+      "ok": true,
+      "detail": "all 8 files with 11 columns",
+      "hard": true
+    },
+    {
+      "kind": "metric",
+      "step": "Read hourly weather data",
+      "label": "Stations",
+      "value": 8,
+      "unit": ""
+    },
+    {
+      "kind": "metric",
+      "step": "Read hourly weather data",
+      "label": "Rows",
+      "value": 362112,
+      "unit": ""
+    },
+    {
+      "kind": "metric",
+      "step": "Read hourly weather data",
+      "label": "Period from",
+      "value": "2019-01-01 00:00:00+00:00",
+      "unit": ""
+    },
+    {
+      "kind": "metric",
+      "step": "Read hourly weather data",
+      "label": "Period to",
+      "value": "2024-02-29 23:00:00+00:00",
+      "unit": ""
+    },
+    {
+      "kind": "check",
+      "step": "Read hourly weather data",
+      "name": "all stations with an identical row count",
+      "ok": true,
+      "detail": "45264 to 45264 rows",
+      "hard": true
+    },
+    {
+      "kind": "check",
+      "step": "Read hourly weather data",
+      "name": "(Weather_ID, Timestamp) unique",
+      "ok": true,
+      "detail": "",
+      "hard": true
+    },
+    {
+      "kind": "step",
+      "name": "Referential integrity household to weather station"
+    },
+    {
+      "kind": "check",
+      "step": "Referential integrity household to weather station",
+      "name": "every Weather_ID of the households has a weather file",
+      "ok": true,
+      "detail": "",
+      "hard": true
+    },
+    {
+      "kind": "check",
+      "step": "Referential integrity household to weather station",
+      "name": "Weather_ID in the master table without gaps",
+      "ok": true,
+      "detail": "",
+      "hard": true
+    },
+    {
+      "kind": "note",
+      "step": "Referential integrity household to weather station",
+      "text": "Sunshine_duration_hourly: empty throughout at ['HbsbG', 'ceOxS', 'sV3mR']"
+    },
+    {
+      "kind": "note",
+      "step": "Referential integrity household to weather station",
+      "text": "Pressure_BarometricHeight_avg_hourly: empty throughout at ['HbsbG', 'ceOxS', 'sV3mR']"
+    },
+    {
+      "kind": "step",
+      "name": "Write results as parquet"
+    },
+    {
+      "kind": "metric",
+      "step": "Write results as parquet",
+      "label": "smart_meter_daily.parquet",
+      "value": "85,464 rows x 15 columns",
+      "unit": ""
+    },
+    {
+      "kind": "metric",
+      "step": "Write results as parquet",
+      "label": "households.parquet",
+      "value": "153 rows x 24 columns",
+      "unit": ""
+    },
+    {
+      "kind": "metric",
+      "step": "Write results as parquet",
+      "label": "weather_hourly.parquet",
+      "value": "362,112 rows x 12 columns",
+      "unit": ""
+    },
+    {
+      "kind": "check",
+      "step": "Write results as parquet",
+      "name": "Parquet round trip without dtype drift",
+      "ok": true,
+      "detail": "verified for all three tables",
+      "hard": true
+    },
+    {
+      "kind": "note",
+      "step": "Write results as parquet",
+      "text": "Output directory: data\\interim\\01_ingested"
+    }
+  ],
+  "n_failures": 0
+}
