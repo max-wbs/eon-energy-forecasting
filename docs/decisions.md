@@ -544,3 +544,40 @@ Die Datei fällt von 5,8 auf **2,7 MB**.
 
 *Code:* `utils/config.py::PANEL_SLIM`, `utils/preselection.py::slim`,
 `utils/preselection.py::contract_columns`
+
+## D-23 · Data Understanding liest zwei Datenzonen: Lieferung auf `raw`, EDA auf dem Panel
+
+Das Kapitel Data Understanding ist zweistufig. Die Unterkapitel *Delivered
+data* (Notebook 01) und *Data quality* (Notebook 02) arbeiten auf `data/raw/`:
+Gegenstand ist die **Lieferung selbst**, und jeder Befund zu Abdeckung, Lücken
+und Qualität muss auf den unveränderten Dateien stehen — sonst beschreibt er
+die Pipeline statt der Daten. Das Unterkapitel *Exploratory data analysis*
+(Notebook 03) arbeitet dagegen auf `data/processed/model_table.parquet` und
+den bereinigten Tabellen aus `02_clean/`: Gegenstand sind die **inhaltlichen
+Zusammenhänge** — Temperatur-Last-Kurve, Saisonalität, Heterogenität,
+PV-Effekt.
+
+Der scheinbare Konflikt mit der CRISP-DM-Reihenfolge — Data Understanding vor
+Data Preparation — ist keiner: Der Prozess ist ausdrücklich iterativ, die
+Rücksprünge zwischen beiden Phasen sind Teil des Modells. Entscheidend ist die
+Arbeitsteilung. Qualitätsprobleme werden auf `raw` **entdeckt und
+dokumentiert** (Notebook 02), bevor die Bereinigung sie behandelt — die EDA
+versteckt also nichts, was nicht vorher belegt wäre. Eine EDA direkt auf `raw`
+würde umgekehrt Verteilungen und Korrelationen durch genau die Befunde
+verzerren, die Notebook 02 dokumentiert.
+
+Der zweite Grund ist inhaltlich: Die EDA-Fragen Q1–Q7 fragen nach der
+**Modellierungsgrundlage**, und die ist das Panel, nicht die gelieferten CSVs.
+`gross_load` ist erst dort definiert (D-21), und `is_modelable` grenzt die
+Zeilen ab, die ein Modell überhaupt sieht (D-19). Dieselben Fragen auf `raw`
+zu beantworten hieße, die Join-, Shift- und Bereinigungslogik der Pipeline im
+Notebook zu duplizieren — mit dem Risiko, dass beide Fassungen auseinanderlaufen.
+
+Der Preis: Die EDA erbt jede Preparation-Entscheidung (etwa D-04, D-18). Wer
+einen EDA-Befund anzweifelt, muss die Kette bis zur betreffenden Entscheidung
+zurückverfolgen können — deshalb verweisen die Lesarten in Notebook 03 auf die
+D-Einträge, auf denen sie stehen.
+
+*Code:* `notebooks/data_understanding/01_delivered_data.ipynb`,
+`02_data_quality.ipynb`, `03_eda.ipynb`;
+Kurzfassung der Zonenaufteilung in `docs/data_understanding_visuals.md`
