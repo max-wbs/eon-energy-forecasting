@@ -1,8 +1,8 @@
 {
   "stage": 2,
   "title": "Cleaning & Validation",
-  "started_at": "2026-07-30T14:26:25+00:00",
-  "finished_at": "2026-07-30T14:26:26+00:00",
+  "started_at": "2026-08-01T07:39:25+00:00",
+  "finished_at": "2026-08-01T07:39:28+00:00",
   "status": "ok",
   "error": null,
   "entries": [
@@ -34,7 +34,7 @@
     {
       "kind": "note",
       "step": "Read the results of stage 1",
-      "text": "Source: data/interim/01_ingested (stage-1 output only, no raw data)"
+      "text": "Source: data\\interim\\01_ingested (stage-1 output only, no raw data)"
     },
     {
       "kind": "step",
@@ -144,7 +144,7 @@
     {
       "kind": "note",
       "step": "Check the PV flag against the feed-in evidence",
-      "text": "PV status of household 877881 was unknown and is set to False based on the feed-in evidence (flag: pv_flag_imputed)"
+      "text": "PV status of household 877881 was unknown and is set to False based on the feed-in evidence over 170 metered days (flag: pv_flag_imputed)"
     },
     {
       "kind": "step",
@@ -696,7 +696,7 @@
     {
       "kind": "note",
       "step": "Write results as parquet",
-      "text": "Metrics machine-readable in data/interim/quality_report.json"
+      "text": "Metrics machine-readable in data\\interim\\quality_report.json"
     }
   ],
   "n_failures": 0

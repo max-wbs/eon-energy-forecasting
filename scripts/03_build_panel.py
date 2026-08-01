@@ -202,6 +202,21 @@ def report_usability(rep: Reporter, panel: pd.DataFrame, groups: dict[str, list[
     # These are the rows a model has to cope with rather than be spared from.
     rep.metric(f"Modelable rows without {', '.join(mandatory)}", int((usable & ~has_lags).sum()))
     rep.metric("Modelable rows without weather (station outage)", int((usable & ~has_weather).sum()))
+    # The outages get attributed rather than left as a bare count: the argument
+    # in D-18 rests on which stations failed and on how many station-days.
+    no_weather = usable & ~has_weather
+    if int(no_weather.sum()):
+        outage_days = panel.loc[no_weather].groupby("Weather_ID", observed=True)["date"].nunique()
+        outage_days = outage_days[outage_days > 0].sort_values(ascending=False)
+        outage_rows = panel.loc[no_weather, "Weather_ID"].value_counts()
+        rep.metric("Station outage days (station x day)", int(outage_days.sum()))
+        rep.note(
+            "Station outage attribution: "
+            + ", ".join(
+                f"{sid}: {int(outage_rows[sid])} rows on {int(n)} outage days"
+                for sid, n in outage_days.items()
+            )
+        )
     rep.note(
         "Neither lags nor weather are a condition of is_modelable. A missing lag follows a "
         "meter outage, a missing weather value a station outage - both happen in production, "
@@ -232,6 +247,31 @@ def report_usability(rep: Reporter, panel: pd.DataFrame, groups: dict[str, list[
         "the evaluation set model-independent: models with different feature requirements are "
         "scored on the same rows and stay comparable"
     )
+
+
+def report_submeter_identity(rep: Reporter, panel: pd.DataFrame) -> None:
+    """Prove on the final panel rows why the submeters are forbidden features.
+
+    Stage 2 proves the identity total == HeatPump + Other on the clean data;
+    this repeats it on the panel after trim and gap-drop. The row count is what
+    the argument in D-21/D-22 rests on - a model that saw the two submeter
+    columns would read the answer on exactly these rows.
+    """
+    rep.step("Submeter identity on the panel")
+
+    both = panel["kWh_received_HeatPump"].notna() & panel["kWh_received_Other"].notna()
+    rep.metric("Panel rows with both submeters", int(both.sum()))
+    rep.metric("Share of panel rows", 100 * both.sum() / len(panel), "%")
+
+    ok, detail = checks.submeter_consistency(panel)
+    rep.check("submeter sum reproduces the target on the panel", ok, detail)
+    rep.note(
+        "This identity is why the modeling stage reads preselection.features and never "
+        "panel.columns. The slim step removes both submeter columns from the written "
+        "panel, so the trap is absent rather than merely forbidden (D-22)"
+    )
+
+    rep.raise_on_failures()
 
 
 def write_outputs(
@@ -314,7 +354,7 @@ def write_schema(
         "passthrough": [c for c in config.PASSTHROUGH_COLUMNS if c in panel.columns],
         "flags": [
             c
-            for c in ("is_gap", "kWh_spike_flag", "returned_was_substituted", "weather_day_incomplete", "is_modelable")
+            for c in ("is_gap", "kWh_spike_flag", "returned_was_substituted", "is_modelable")
             if c in panel.columns
         ],
         "forecast_lag_days": config.FORECAST_LAG,
@@ -400,6 +440,9 @@ def run(rep: Reporter) -> None:
     panel = drop_gap_rows(rep, panel)
     panel = splits.assign_split(rep, panel)
     report_usability(rep, panel, groups)
+    # Runs before the pre-selection renames the target and before the slim
+    # removes the submeter columns - it needs both in the source vocabulary.
+    report_submeter_identity(rep, panel)
     # The pre-selection runs last for two reasons. It needs `split` to keep
     # every statistic on the training rows, and it needs `is_modelable` so it
     # does not measure coverage over rows no model will ever see. It is also

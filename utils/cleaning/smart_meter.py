@@ -109,11 +109,11 @@ def cross_check_pv_flag(rep: Reporter, df: pd.DataFrame, households: pd.DataFram
     evidence = (
         df.assign(pos=df["kWh_returned_Total"].fillna(0) > 0)
         .groupby("Household_ID", observed=True)["pos"]
-        .any()
-        .rename("feeds_in")
+        .agg(feeds_in="any", evidence_days="size")
     )
     merged = households.merge(evidence, left_on="Household_ID", right_index=True, how="left")
     merged["feeds_in"] = merged["feeds_in"].fillna(False)
+    merged["evidence_days"] = merged["evidence_days"].fillna(0).astype("int64")
 
     flag = merged["Installation_HasPVSystem"]
     flagged_no_feed = merged[(flag == True) & ~merged["feeds_in"]]  # noqa: E712
@@ -149,10 +149,11 @@ def cross_check_pv_flag(rep: Reporter, df: pd.DataFrame, households: pd.DataFram
         resolved.loc[mask, "pv_flag_imputed"] = True
         rep.note(
             f"PV status of household {row['Household_ID']} was unknown and is set to "
-            f"{inferred} based on the feed-in evidence (flag: pv_flag_imputed)"
+            f"{inferred} based on the feed-in evidence over {int(row['evidence_days'])} "
+            "metered days (flag: pv_flag_imputed)"
         )
 
-    return resolved.drop(columns=["feeds_in"])
+    return resolved.drop(columns=["feeds_in", "evidence_days"])
 
 
 # --------------------------------------------------------------------------
