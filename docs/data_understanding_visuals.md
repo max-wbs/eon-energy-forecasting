@@ -3,29 +3,28 @@
 _Entscheidungsgrundlage für die Abbildungen des Report-Kapitels „Data
 Understanding". Jede Entscheidung ist an einem Befund aus den echten Daten
 festgemacht (verifiziert gegen `data/raw/` bzw. `data/processed/`), nicht an
-der Projektdokumentation. Stand 2026-07-31: die EDA ist in **einem**
-konsolidierten Notebook zusammengeführt (`03_eda.ipynb`, ersetzt die frühere
-Fassung gleichen Namens); die früheren Notebooks
-`03b_eda_household_dynamics` und `eda_extern` sind entfernt._
+der Projektdokumentation. Stand 2026-07-31: die gesamte EDA liegt in
+**einem** konsolidierten Notebook (`03_eda.ipynb`); frühere Arbeitsstände
+wurden vor dem Commit verworfen und liegen nicht im Repository._
 
 **Artefakte:**
 
 | Was | Wo |
 |---|---|
 | Notebooks (ausgeführt, Abbildungen eingebettet) | `notebooks/data_understanding/01_delivered_data.ipynb`, `02_data_quality.ipynb`, `03_eda.ipynb` |
-| Abbildungen (Vektor-PDF für den Report + PNG-Vorschau) | `images/data_understanding/` — 12 Abbildungen: 2 aus Notebook 01, 10 aus Notebook 03 |
+| Abbildungen (Vektor-PDF für den Report + PNG-Vorschau) | `images/data_understanding/` — 13 Abbildungen: 3 aus Notebook 01, 10 aus Notebook 03 |
 | Berechnete Data-Quality-Kennzahlen | `docs/data_quality_summary.md` (generiert von Notebook 02) |
 
 Zonenaufteilung nach D-23: Notebooks 01 + 02 arbeiten auf `raw` (die
 *Lieferung* ist Gegenstand), Notebook 03 auf `processed`/`02_clean` (die
 *Inhalte* sind Gegenstand — `gross_load` und `is_modelable` existieren nur
-dort). Alle Pfade relativ, alle Zahlen zur Laufzeit berechnet (D-15). Die
-Abbildungsnamen mit Präfix `03b_` stammen historisch aus dem früheren
-Haushalts-Notebook, werden aber vom konsolidierten Notebook exportiert.
+dort). Alle Pfade relativ, alle Zahlen zur Laufzeit berechnet (D-15). Zwei
+Abbildungsnamen tragen das Präfix `03b_` (Rest eines früheren, nicht
+committeten Arbeitsstands); auch sie werden von `03_eda.ipynb` exportiert.
 
 ---
 
-## Unterkapitel 1 — The delivered data: **Plot ja** (zwei Abbildungen)
+## Unterkapitel 1 — The delivered data: **Plot ja** (drei Abbildungen)
 
 **Gewünscht war „ein Plot zur Smart-Meter-Abdeckung". Hinterfragt:**
 
@@ -37,20 +36,22 @@ Haushalts-Notebook, werden aber vom konsolidierten Notebook exportiert.
 - **Was die Daten tatsächlich hergeben — und was nicht trivial ist:** die
   **zeitliche Abdeckung der 156 gelieferten Zählpunkte**. Befunde: Starts und
   Enden verteilt über 2018–2024 (rollierendes Programm, kein Paneldesign);
-  **nie mehr als 67 Haushalte liefern gleichzeitig** (Tagesabdeckung 25–67);
+  **nie mehr als 67 Haushalte liefern gleichzeitig** (Tagesabdeckung 18–67);
   41 Historien mit inneren Kalenderlücken bis 333 Tage; 3 Haushalte liefern
   ausschließlich Zeilen ohne Zielwert.
 
-**Gewählt:** Zwei separate Abbildungen mit identischer Zeitachse (statt der
-früheren Zwei-Panel-Abbildung — im Report einzeln platzier- und zitierbar):
+**Gewählt:** Drei separate Abbildungen mit identischer Zeitachse (im Report
+einzeln platzier- und zitierbar):
 
 | Abbildung | Inhalt |
 |---|---|
 | `01_delivered_daily_active_households` | Anzahl aktiv liefernder Haushalte je Kalendertag, Peak (67) annotiert, Train/Test-Cutoff 2023-06-30 markiert — erklärt, warum nur 71 von 153 modellierten Haushalten Testzeilen haben |
 | `01_delivered_recording_coverage` | Eine Zeile je Haushalt, sortiert nach Lieferbeginn (früheste unten): dunkle Segmente = gelieferte Tage, weiß = keine Lieferung; innere Kalenderlücken erscheinen als weiße Unterbrechungen |
+| `01_delivered_usable_history` | Gleiche Anordnung, aber dunkel = Tag mit beobachtetem Zielwert, hell = Aufzeichnungsfenster ohne Zielwert — trennt nutzbare Historie von bloßer Aufzeichnung; die 3 Haushalte ohne jeden Zielwert (und `816910` mit fast keinem) erscheinen als durchgehend helle Balken |
 
-Zeilen ohne Zielwert werden nicht separat kodiert (betrifft im Kern 3
-Haushalte — Kennzahl statt dritter Farbe).
+In der Coverage-Abbildung werden Zeilen ohne Zielwert nicht separat kodiert;
+diese Unterscheidung (Zielwert beobachtet vs. nur Aufzeichnung) trägt die
+dritte Abbildung `01_delivered_usable_history`.
 
 **Verworfene Alternativen:** Heatmap Haushalt × Monat (verschmiert
 Lückenkanten), kumulative Enrollment-Kurve (zeigt Abgänge nicht), Stacked
@@ -88,7 +89,7 @@ beantwortet, bekommt keinen Plot (§5).
 | Frage | Antwort (berechnet, Panel: 81.085 modelbare Zeilen, 153 Haushalte) | Abbildung |
 |---|---|---|
 | Q1 Welche Dynamik muss die Prognose tragen? | Saisonhub Faktor ~3 (Wintermittel 48,4 vs. Sommermittel 15,3 kWh/Tag), Kältespitzen bis 70,4 kWh/Tag (14.02.2021) = Beschaffungsrisiko | `03_eda_load_seasonality` (§1) |
-| Q2 Wie heterogen sind die Niveaus? | Haushaltsmittel p5 12,2 / Median 29,0 / p95 56,9 kWh/Tag (Faktor ~5), rechtsschief bis 93,7 | `03_eda_household_heterogeneity` (§2.1) |
+| Q2 Wie heterogen sind die Niveaus? | Haushaltsmittel p5 12,2 / Median 29,0 / p95 56,9 kWh/Tag (Faktor 4,6), rechtsschief bis 93,7 | `03_eda_household_heterogeneity` (§2.1) |
 | Q2 Trennt PV die Niveaus? | Nein — PV- und Nicht-PV-Haushalte durchmischen sich über die gesamte Spanne 6,5–93,7 (PV im Mittel 25,1 vs. 34,5) | `03_eda_household_levels_sorted_pv` (§2.2) |
 | Q3 Wie stark/nichtlinear ist die Temperaturabhängigkeit? | WP-Signatur mit Heizgrenze ~15 °C (stützt `hdd_15`, D-10), Sommerplateau 14–16 kWh, Anstieg auf ~70 kWh im kältesten gut besetzten Bin (~−9 °C); gepoolt r = −0,63 | `03_eda_temperature_load_curve` (§3.1) |
 | Q3 Wie viel erklärt Temperatur im Tagesmittel? | Über Haushalte gemittelt r = −0,95, R² = 0,91, ≈ −1,9 kWh je +1 °C — die Niveaustreuung mittelt sich heraus | `03_eda_temperature_scatter_daily` (§3.2) |
@@ -115,7 +116,7 @@ beantwortet, bekommt keinen Plot (§5).
 
 **Saisonalität (§1):** Monatsboxplots (verstecken die Kältespitzen — genau
 das Beschaffungsrisiko), Jahresüberlagerung (verdeckt, dass die Abdeckung
-25–67 Haushalte je Tag mischt; der Kompositions-Caveat steht im Notebook und
+17–66 Haushalte je Tag mischt; der Kompositions-Caveat steht im Notebook und
 gehört in die Caption). Gewählt: Tagesmittel + 14-Tage-Rolling + IQR-Band.
 
 **Temperaturkurve (§3.1):** reine Scatterwolke (80.912 Punkte, unlesbar) und

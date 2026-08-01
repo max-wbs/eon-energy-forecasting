@@ -1,7 +1,7 @@
 # Projektplan: Data Understanding & Data Preparation
 
 _E.ON Day-Ahead Energy Forecasting — TUM SS26, CRISP-DM_
-_Ergänzt die Gedankensammlung in [Data_Preparation.md](Data_Preparation.md) um einen umsetzbaren Plan._
+_Ergänzt die im Vorfeld entstandene Gedankensammlung um einen umsetzbaren Plan._
 
 > **Hinweis:** Dieses Dokument ist der **Entwurf** und wird als Entstehungs­geschichte
 > bewusst nicht rückwirkend umgeschrieben. Vier Festlegungen wurden nach dem Entwurf
@@ -17,6 +17,13 @@ _Ergänzt die Gedankensammlung in [Data_Preparation.md](Data_Preparation.md) um 
 > Ebenfalls umbenannt: `after_visit` → `is_post_visit`, `dayofweek` → `dow`, die
 > Wetter-Tagesaggregate nach dem Muster `<Rohspalte>_<Aggregatfunktion>`.
 > Das Panelfenster ist damit **2019-01-02 bis 2024-03-01**.
+>
+> Zwei weitere Abweichungen betreffen die Artefaktstruktur: Statt der im Text
+> genannten Notebooks `01_du_diagnostic.ipynb` / `02_du_insights.ipynb` existieren
+> drei Notebooks unter `notebooks/data_understanding/` — `01_delivered_data.ipynb`,
+> `02_data_quality.ipynb`, `03_eda.ipynb` (Zonenaufteilung siehe D-23). Und die als
+> `docs/Data_Preparation.md` referenzierte Gedankensammlung wurde nicht ins Repo
+> übernommen; entsprechende Verweise im Text sind Entstehungsgeschichte.
 
 ---
 
@@ -38,7 +45,7 @@ Für die Day-ahead-Beschaffung soll der Tagesstromverbrauch von Haushalten mit W
 
 | Quelle | Umfang | Kernbefunde |
 |---|---|---|
-| `smart_meter_daily/*.csv` | 156 Dateien, 88.791 Zeilen | 5–1.846 Tage je Haushalt (Median 492); 57 Haushalte < 365 Tage; 41 Haushalte mit Kalenderlücken > 1 Tag (max. 334 Tage); 4.293 fehlende Zielwerte; keine Duplikate, keine Negativwerte |
+| `smart_meter_daily/*.csv` | 156 Dateien, 88.791 Zeilen | 5–1.846 Tage je Haushalt (Median 492); 57 Haushalte < 365 Tage; 41 Haushalte mit Kalenderlücken > 1 Tag (längste Lücke 333 fehlende Tage); 4.293 fehlende Zielwerte; keine Duplikate, keine Negativwerte |
 | `smart_meter_meta_data/households.csv` | 156 Zeilen | alle Gruppe `treatment`; 39 Haushalte mit PV, 1 PV-Flag fehlt; `Weather_ID` verweist auf 8 Stationen |
 | `smart_meter_meta_data/meta_data.csv` | **142** Zeilen | Survey-Merkmale; deckt nur 142 der 156 Haushalte ab; leere Boolean-Zellen bedeuten *unbekannt*, nicht *False* |
 | `weather_data_hourly/*.csv` | 8 Stationen, je 45.264 Zeilen | stündlich **lückenlos** 2019-01-01 bis 2024-02-29; NaN-Anteil < 1,1 %; 3 Stationen ohne Sunshine und Pressure |

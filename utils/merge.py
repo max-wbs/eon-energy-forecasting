@@ -178,9 +178,10 @@ def trim_to_window(rep: Reporter, panel: pd.DataFrame) -> pd.DataFrame:
 
     Can be switched off via `config.TRIM_TO_WEATHER_WINDOW`. With the switch
     off the full metering period is kept: the rows outside the weather window
-    keep their target value and carry NaN in every weather column. They
-    therefore drop out of any weather-based model through `is_modelable` while
-    staying available to a purely autoregressive one. What changes is not the
+    keep their target value and carry NaN in every weather column. They stay
+    modelable - `is_modelable` requires only the target (D-19) - so a
+    weather-based model has to handle or filter them itself, while a purely
+    autoregressive one can use them as they are. What changes is not the
     data situation but where the decision is made - in modeling instead of here.
     """
     rep.step("Trim the panel to the usable time window")
@@ -268,9 +269,9 @@ def _keep_full_period(
         "weather column"
     )
     rep.note(
-        "Consequence: those rows are unusable for weather-based models and are excluded "
-        "through is_modelable. A purely autoregressive model can still use them - that is "
-        "the point of the switch"
+        "Consequence: those rows stay modelable - is_modelable requires only the target "
+        "(D-19) - so a weather-based model has to handle or filter them itself. A purely "
+        "autoregressive model can use them as they are - that is the point of the switch"
     )
 
     # Every row outside the window must be free of weather, every row inside

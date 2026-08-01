@@ -1,8 +1,8 @@
 {
   "stage": 3,
   "title": "Panel, Features & Split",
-  "started_at": "2026-08-01T07:18:21+00:00",
-  "finished_at": "2026-08-01T07:18:24+00:00",
+  "started_at": "2026-08-01T07:39:35+00:00",
+  "finished_at": "2026-08-01T07:39:38+00:00",
   "status": "ok",
   "error": null,
   "entries": [
@@ -926,6 +926,18 @@
       "unit": ""
     },
     {
+      "kind": "metric",
+      "step": "Usability of the panel",
+      "label": "Station outage days (station x day)",
+      "value": 28,
+      "unit": ""
+    },
+    {
+      "kind": "note",
+      "step": "Usability of the panel",
+      "text": "Station outage attribution: HbsbG: 98 rows on 25 outage days, ceOxS: 9 rows on 3 outage days"
+    },
+    {
       "kind": "note",
       "step": "Usability of the panel",
       "text": "Neither lags nor weather are a condition of is_modelable. A missing lag follows a meter outage, a missing weather value a station outage - both happen in production, and a fleet that has to bid every day cannot skip those days. The model has to handle the NaN (tree models do so natively) instead of having the rows removed from its evaluation"
@@ -953,6 +965,37 @@
       "kind": "note",
       "step": "Usability of the panel",
       "text": "The column is_modelable marks rows with a target value - nothing else. That makes the evaluation set model-independent: models with different feature requirements are scored on the same rows and stay comparable"
+    },
+    {
+      "kind": "step",
+      "name": "Submeter identity on the panel"
+    },
+    {
+      "kind": "metric",
+      "step": "Submeter identity on the panel",
+      "label": "Panel rows with both submeters",
+      "value": 3172,
+      "unit": ""
+    },
+    {
+      "kind": "metric",
+      "step": "Submeter identity on the panel",
+      "label": "Share of panel rows",
+      "value": 3.8658882889909933,
+      "unit": "%"
+    },
+    {
+      "kind": "check",
+      "step": "Submeter identity on the panel",
+      "name": "submeter sum reproduces the target on the panel",
+      "ok": true,
+      "detail": "3172 rows with submetering, maximum deviation 0.00 kWh, 0 rows above the tolerance of 0.5 kWh",
+      "hard": true
+    },
+    {
+      "kind": "note",
+      "step": "Submeter identity on the panel",
+      "text": "This identity is why the modeling stage reads preselection.features and never panel.columns. The slim step removes both submeter columns from the written panel, so the trap is absent rather than merely forbidden (D-22)"
     },
     {
       "kind": "step",

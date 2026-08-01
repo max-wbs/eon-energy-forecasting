@@ -6,8 +6,8 @@ _Produced by `utils/reporting.py`; configuration in `utils/config.py`, reasoning
 | Stage | Title | Status | Run (UTC) |
 |---|---|---|---|
 | 1 | Load & Type | ok | 2026-07-30T11:50:24+00:00 |
-| 2 | Cleaning & Validation | ok | 2026-07-30T11:50:30+00:00 |
-| 3 | Panel, Features & Split | ok | 2026-08-01T07:18:24+00:00 |
+| 2 | Cleaning & Validation | ok | 2026-08-01T07:39:28+00:00 |
+| 3 | Panel, Features & Split | ok | 2026-08-01T07:39:38+00:00 |
 
 ---
 
@@ -138,7 +138,7 @@ _Run: 2026-07-30T11:50:24+00:00 UTC - status: successful_
 
 ## Stage 2 - Cleaning & Validation
 
-_Run: 2026-07-30T11:50:30+00:00 UTC - status: successful_
+_Run: 2026-08-01T07:39:28+00:00 UTC - status: successful_
 
 ### Read the results of stage 1
 
@@ -180,7 +180,7 @@ _Run: 2026-07-30T11:50:30+00:00 UTC - status: successful_
 | PV flag False, but feed-in evidenced | 0 |
 
 - PV according to the master data, without feed-in in the data: 7374981, 1211151 - possibly a measurement gap or a system installed after the metering period
-- PV status of household 877881 was unknown and is set to False based on the feed-in evidence (flag: pv_flag_imputed)
+- PV status of household 877881 was unknown and is set to False based on the feed-in evidence over 170 metered days (flag: pv_flag_imputed)
 
 - [ok] no household feeds in without being listed as a PV owner
 
@@ -317,7 +317,7 @@ _Run: 2026-07-30T11:50:30+00:00 UTC - status: successful_
 
 ## Stage 3 - Panel, Features & Split
 
-_Run: 2026-08-01T07:18:24+00:00 UTC - status: successful_
+_Run: 2026-08-01T07:39:38+00:00 UTC - status: successful_
 
 ### Read the results of stage 2
 
@@ -514,12 +514,25 @@ _Run: 2026-08-01T07:18:24+00:00 UTC - status: successful_
 | Share of modelable rows | 98.82 % |
 | Modelable rows without recv_lag1, recv_lag7 | 1,315 |
 | Modelable rows without weather (station outage) | 107 |
+| Station outage days (station x day) | 28 |
 | Households without a single modelable row | 0 |
 | Median modelable rows per household | 428 |
 
+- Station outage attribution: HbsbG: 98 rows on 25 outage days, ceOxS: 9 rows on 3 outage days
 - Neither lags nor weather are a condition of is_modelable. A missing lag follows a meter outage, a missing weather value a station outage - both happen in production, and a fleet that has to bid every day cannot skip those days. The model has to handle the NaN (tree models do so natively) instead of having the rows removed from its evaluation
 - Feature availability stays readable per row from the columns themselves (recv_lag1, recv_lag7, Temperature_avg_hourly_mean). A modeling script that needs the strict subset can reproduce it in one line - the reverse, recovering rows a flag already discarded, is not possible
 - The column is_modelable marks rows with a target value - nothing else. That makes the evaluation set model-independent: models with different feature requirements are scored on the same rows and stay comparable
+
+### Submeter identity on the panel
+
+| Metric | Value |
+|---|---|
+| Panel rows with both submeters | 3,172 |
+| Share of panel rows | 3.87 % |
+
+- This identity is why the modeling stage reads preselection.features and never panel.columns. The slim step removes both submeter columns from the written panel, so the trap is absent rather than merely forbidden (D-22)
+
+- [ok] submeter sum reproduces the target on the panel - 3172 rows with submetering, maximum deviation 0.00 kWh, 0 rows above the tolerance of 0.5 kWh
 
 ### Final feature pre-selection
 

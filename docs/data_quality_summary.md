@@ -58,3 +58,19 @@ Tage am Stück). Sichtbar in `images/data_understanding/01_delivered_recording_c
 | sV3mR | 45264 | True | 4 | 0.75% |
 | wDD | 45264 | True | 0 | 0.11% |
 | z6I | 45264 | True | 0 | 0.37% |
+
+## UTC-Tagesgrenze (D-01)
+
+Messung auf den Wetterstundendaten — die Last ist nur als Tageswert geliefert,
+dort ist die Fensterwahl nicht nachmessbar:
+
+| Kennzahl | Wert |
+|---|---|
+| Stations-Tage im Vergleich | 15,070 |
+| Zählerstempel 23:59:59 UTC in Lokalzeit | 00:59:59 (CET, 43.2%) / 01:59:59 (CEST, 56.8%) |
+| Tagesmittel-Temperatur: r (UTC- vs. Berlin-Fenster) | 0.9996 |
+| Tagesmittel-Temperatur: mittlere Differenz | +0.000 K |
+| Tagesmittel-Temperatur: mittlere absolute Differenz | 0.145 K |
+| Tagesmittel-Temperatur: P95 / Maximum der absoluten Differenz | 0.41 K / 2.20 K |
+| hdd_15: mittlere absolute Differenz | 0.094 K |
+| hdd_15: Anteil Tage mit absoluter Differenz > 0,5 K | 1.25% |

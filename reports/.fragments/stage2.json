@@ -1,8 +1,8 @@
 {
   "stage": 2,
   "title": "Cleaning & Validation",
-  "started_at": "2026-07-30T11:50:28+00:00",
-  "finished_at": "2026-07-30T11:50:30+00:00",
+  "started_at": "2026-08-01T07:39:25+00:00",
+  "finished_at": "2026-08-01T07:39:28+00:00",
   "status": "ok",
   "error": null,
   "entries": [
@@ -144,7 +144,7 @@
     {
       "kind": "note",
       "step": "Check the PV flag against the feed-in evidence",
-      "text": "PV status of household 877881 was unknown and is set to False based on the feed-in evidence (flag: pv_flag_imputed)"
+      "text": "PV status of household 877881 was unknown and is set to False based on the feed-in evidence over 170 metered days (flag: pv_flag_imputed)"
     },
     {
       "kind": "step",

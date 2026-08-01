@@ -18,12 +18,24 @@ sich exakt joinen.
 
 Die Alternative wäre `Europe/Berlin`. Sie wäre physikalisch näher am
 Tagesverbrauch eines Haushalts, erfordert aber eine Sommerzeit-Behandlung mit
-23- und 25-Stunden-Tagen. Der Versatz zwischen UTC und Lokalzeit beträgt eine
-bis zwei Stunden und wirkt auf alle Haushalte und alle Tage gleich — er
-verschiebt das Niveau, nicht die Struktur. Für einen Tagesprognose-Horizont ist
-das vertretbar.
+23- und 25-Stunden-Tagen. Der Versatz beträgt eine Stunde (CET) bzw. zwei
+Stunden (CEST); der Zählerstempel 23:59:59 UTC liegt lokal bei 00:59:59
+bzw. 01:59:59.
 
-*Code:* `utils/io.py::_to_utc_date`
+Was die Fensterwahl kostet, ist gemessen, soweit die Daten es zulassen
+(Notebook `02_data_quality`, Abschnitt „UTC-Tagesgrenze"; Kennzahlen in
+`docs/data_quality_summary.md`): Auf den Wetterstundendaten unterscheiden sich
+die Tagesmittel der Temperatur zwischen UTC- und Berlin-Fenster im Mittel um
+0,000 K (mittlere absolute Differenz 0,145 K, P95 0,41 K) bei einer Korrelation
+von r = 0,9996; `hdd_15` weicht nur an 1,25 % der Stations-Tage um mehr als
+0,5 K ab. Die Fensterwahl verändert Niveau und Struktur der Wetteraggregate
+also nicht messbar. Für die **Last** ist der Effekt prinzipiell nicht
+nachmessbar: sie ist ausschließlich als Tageswert geliefert und lässt sich
+nicht auf lokale Tage umaggregieren. Für einen Tagesprognose-Horizont ist die
+UTC-Grenze damit belegt vertretbar.
+
+*Code:* `utils/io.py::_to_utc_date`; Messung:
+`notebooks/data_understanding/02_data_quality.ipynb`
 
 ## D-02 · IDs sind Strings, nie Integer
 
@@ -114,9 +126,10 @@ Imputation braucht, wird der Imputer ausschließlich auf `train` gefittet.
 ## D-07 · Reindexing je Haushalt, kein globaler Flottenkalender
 
 `shift(k)` ist nur dann korrekt, wenn die Zeile *k* Positionen zurück auch dem
-Tag *d−k* entspricht. 41 Haushalte haben Kalenderlücken bis zu 334 Tagen — ohne
-Reindexing würde ein `shift(2)` dort über die Lücke springen und einen Wert von
-vor Wochen als „vorgestern" ausgeben.
+Tag *d−k* entspricht. 39 der 153 verbleibenden Haushalte haben Kalenderlücken
+von bis zu 333 fehlenden Tagen (im Rohbestand vor D-04: 41 von 156) — ohne
+Reindexing würde ein `shift(1)` dort über die Lücke springen und einen Wert von
+vor Wochen als „gestern" ausgeben.
 
 Reindiziert wird je Haushalt auf dessen eigene Spanne `[first_date, last_date]`,
 nicht auf einen flottenweiten Kalender. Ein globaler Kalender würde Zeilen für
@@ -270,10 +283,13 @@ Damit die Namen niemanden in die Irre führen, hält das Schema
 
 ## D-17 · Schmale aktive Auswahl, breite Reserve
 
-Das Panel berechnet 50 Featurekandidaten, das Modell bekommt **20**. Die
-übrigen 30 bleiben als Spalten im Panel, stehen aber im Schema unter
-`deselected` statt unter `feature_groups` — ein Modeling-Skript, das dem Schema
-folgt, sieht sie nicht.
+Das Panel berechnet 50 Featurekandidaten, die aktive Auswahl dieser Stufe
+umfasst **20**. Die übrigen 30 bleiben als Spalten im Panel, stehen aber im
+Schema unter `deselected` statt unter `feature_groups` — ein Modeling-Skript,
+das dem Schema folgt, sieht sie nicht. (**Nachtrag zu D-21:** der
+Übergabevertrag, den das Modell tatsächlich liest, umfasst **21** Features —
+Schritt 10.5 ergänzt `weather_id`, siehe D-21. Die 20 hier beschreiben die
+Auswahl aus den 50 berechneten Kandidaten.)
 
 Aktiv sind: 4 autoregressive (`recv_lag1`, `recv_lag7`, `recv_roll7_mean`,
 `recv_roll7_std`), 9 Wetter (Temperatur mean/min/max, Feuchte, Wind, Taupunkt,
@@ -330,8 +346,9 @@ wenn eine Wetterstation ausfällt. Diese Zeilen aus der Bewertung zu entfernen
 würde die gemessene Genauigkeit besser aussehen lassen als die betriebliche
 Wirklichkeit.
 
-Daraus folgt die Definition von **`is_modelable` = Zielwert vorhanden UND
-Pflicht-Lags vorhanden** — Wetter ist ausdrücklich **keine** Bedingung. Ein
+Daraus folgt für diese Zeilen: Wetter ist ausdrücklich **keine** Bedingung von
+`is_modelable`. Die Definition selbst ist allein **Zielwert vorhanden** — auch
+Pflicht-Lags sind keine Bedingung, siehe D-19. Ein
 Wettermodell muss die 107 Zeilen selbst behandeln (Bäume mit nativer
 NaN-Behandlung, Rückgriff auf eine Nachbarstation oder ein Fallback ohne
 Wetter). Der Nebeneffekt ist methodisch wichtig: weil `is_modelable` nicht von
@@ -416,7 +433,7 @@ Die entscheidende Zelle ist die Null oben rechts: **kein Haushalt speist ein, oh
 
 Die zwei Abweichungen in der anderen Richtung sind erklärbar: `1211151` (766 Tage, endet 2021-04-05) und `7374981` (657 Tage, endet 2020-12-17) sind als PV-Besitzer geführt, speisen aber an keinem einzigen Tag ein. Beide Zeitreihen enden früh — plausibel ist eine Anlage, die nach dem Messzeitraum installiert wurde. Sie bleiben im PV-Segment, weil das Label die Installation beschreibt und nicht das Messfenster.
 
-`pv_flag_imputed` markiert den einen Haushalt, bei dem das Flag *abgeleitet* statt gemeldet ist: `877881` stand auf `unknown` und wurde über 151 Tage ausschließlich mit `0.0` Einspeisung auf `False` gesetzt. Wer die Segmentierung strikt auf gemeldete Werte stützen will, schließt diesen einen Haushalt über die Flag aus.
+`pv_flag_imputed` markiert den einen Haushalt, bei dem das Flag *abgeleitet* statt gemeldet ist: `877881` stand auf `unknown` und wurde auf `False` gesetzt, weil über seine gesamte Messhistorie von 170 Tagen (2023-10-03 bis 2024-03-20) keine einzige Einspeisung beobachtet wurde — die durchgängig leeren `kWh_returned_Total`-Zellen wurden nach D-12 auf `0.0` substituiert. 151 dieser Tage liegen im Panelfenster. Wer die Segmentierung strikt auf gemeldete Werte stützen will, schließt diesen einen Haushalt über die Flag aus.
 
 ### Was ausdrücklich *nicht* die Segmentierungsvariable ist
 
