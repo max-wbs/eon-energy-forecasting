@@ -5,15 +5,15 @@ _Produced by `utils/reporting.py`; configuration in `utils/config.py`, reasoning
 
 | Stage | Title | Status | Run (UTC) |
 |---|---|---|---|
-| 1 | Load & Type | ok | 2026-07-30T11:50:24+00:00 |
-| 2 | Cleaning & Validation | ok | 2026-07-30T11:50:30+00:00 |
-| 3 | Panel, Features & Split | ok | 2026-07-30T11:50:36+00:00 |
+| 1 | Load & Type | ok | 2026-07-30T14:26:19+00:00 |
+| 2 | Cleaning & Validation | ok | 2026-07-30T14:26:26+00:00 |
+| 3 | Panel, Features & Split | ok | 2026-07-30T14:26:33+00:00 |
 
 ---
 
 ## Stage 1 - Load & Type
 
-_Run: 2026-07-30T11:50:24+00:00 UTC - status: successful_
+_Run: 2026-07-30T14:26:19+00:00 UTC - status: successful_
 
 ### Read smart meter daily data
 
@@ -130,7 +130,7 @@ _Run: 2026-07-30T11:50:24+00:00 UTC - status: successful_
 | households.parquet | 153 rows x 24 columns |
 | weather_hourly.parquet | 362,112 rows x 12 columns |
 
-- Output directory: data\interim\01_ingested
+- Output directory: data/interim/01_ingested
 
 - [ok] Parquet round trip without dtype drift - verified for all three tables
 
@@ -138,7 +138,7 @@ _Run: 2026-07-30T11:50:24+00:00 UTC - status: successful_
 
 ## Stage 2 - Cleaning & Validation
 
-_Run: 2026-07-30T11:50:30+00:00 UTC - status: successful_
+_Run: 2026-07-30T14:26:26+00:00 UTC - status: successful_
 
 ### Read the results of stage 1
 
@@ -148,7 +148,7 @@ _Run: 2026-07-30T11:50:30+00:00 UTC - status: successful_
 | Households | 153 |
 | Weather hourly rows | 362,112 |
 
-- Source: data\interim\01_ingested (stage-1 output only, no raw data)
+- Source: data/interim/01_ingested (stage-1 output only, no raw data)
 
 ### Flag outliers
 
@@ -309,7 +309,7 @@ _Run: 2026-07-30T11:50:30+00:00 UTC - status: successful_
 | weather_hourly.parquet | 362,112 rows x 10 columns |
 | weather_daily.parquet | 15,088 rows x 16 columns |
 
-- Metrics machine-readable in data\interim\quality_report.json
+- Metrics machine-readable in data/interim/quality_report.json
 
 - [ok] Parquet round trip without dtype drift - verified for all four tables
 
@@ -317,7 +317,7 @@ _Run: 2026-07-30T11:50:30+00:00 UTC - status: successful_
 
 ## Stage 3 - Panel, Features & Split
 
-_Run: 2026-07-30T11:50:36+00:00 UTC - status: successful_
+_Run: 2026-07-30T14:26:33+00:00 UTC - status: successful_
 
 ### Read the results of stage 2
 
@@ -327,7 +327,7 @@ _Run: 2026-07-30T11:50:36+00:00 UTC - status: successful_
 | Households | 153 |
 | Weather daily rows | 15,088 |
 
-- Source: data\interim\02_clean (stage-2 output only)
+- Source: data/interim/02_clean (stage-2 output only)
 
 ### Date the weather to the forecasting point in time
 
@@ -610,4 +610,4 @@ _Run: 2026-07-30T11:50:36+00:00 UTC - status: successful_
 | model_table_schema.json | 5 feature groups, 21 active features |
 
 - The modeling stage builds its feature list from preselection.features in the schema, never from panel.columns: kWh_received_HeatPump and kWh_received_Other sum to the target exactly, so a naive 'everything except gross_load' would be reading the answer
-- Output directory: data\processed
+- Output directory: data/processed
