@@ -208,6 +208,7 @@ def trim_to_window(rep: Reporter, panel: pd.DataFrame) -> pd.DataFrame:
     rep.metric("of which with a target value", target_before - int(out[config.TARGET_COL].notna().sum()))
     rep.metric("Households before", hh_before)
     rep.metric("Households after", out["Household_ID"].nunique())
+    rep.metric("Households affected", int(panel.loc[outside, "Household_ID"].nunique()))
 
     lost = set(panel["Household_ID"]) - set(out["Household_ID"])
     if lost:

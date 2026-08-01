@@ -1,8 +1,8 @@
 {
   "stage": 3,
   "title": "Panel, Features & Split",
-  "started_at": "2026-07-30T11:50:35+00:00",
-  "finished_at": "2026-07-30T11:50:36+00:00",
+  "started_at": "2026-08-01T07:18:21+00:00",
+  "finished_at": "2026-08-01T07:18:24+00:00",
   "status": "ok",
   "error": null,
   "entries": [
@@ -228,6 +228,13 @@
       "step": "Trim the panel to the usable time window",
       "label": "Households after",
       "value": 153,
+      "unit": ""
+    },
+    {
+      "kind": "metric",
+      "step": "Trim the panel to the usable time window",
+      "label": "Households affected",
+      "value": 100,
       "unit": ""
     },
     {

@@ -314,7 +314,7 @@ def write_schema(
         "passthrough": [c for c in config.PASSTHROUGH_COLUMNS if c in panel.columns],
         "flags": [
             c
-            for c in ("is_gap", "kWh_spike_flag", "returned_was_substituted", "weather_day_incomplete", "is_modelable")
+            for c in ("is_gap", "kWh_spike_flag", "returned_was_substituted", "is_modelable")
             if c in panel.columns
         ],
         "forecast_lag_days": config.FORECAST_LAG,

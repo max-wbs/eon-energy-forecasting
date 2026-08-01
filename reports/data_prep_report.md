@@ -7,7 +7,7 @@ _Produced by `utils/reporting.py`; configuration in `utils/config.py`, reasoning
 |---|---|---|---|
 | 1 | Load & Type | ok | 2026-07-30T11:50:24+00:00 |
 | 2 | Cleaning & Validation | ok | 2026-07-30T11:50:30+00:00 |
-| 3 | Panel, Features & Split | ok | 2026-07-30T11:50:36+00:00 |
+| 3 | Panel, Features & Split | ok | 2026-08-01T07:18:24+00:00 |
 
 ---
 
@@ -317,7 +317,7 @@ _Run: 2026-07-30T11:50:30+00:00 UTC - status: successful_
 
 ## Stage 3 - Panel, Features & Split
 
-_Run: 2026-07-30T11:50:36+00:00 UTC - status: successful_
+_Run: 2026-08-01T07:18:24+00:00 UTC - status: successful_
 
 ### Read the results of stage 2
 
@@ -372,6 +372,7 @@ _Run: 2026-07-30T11:50:36+00:00 UTC - status: successful_
 | of which with a target value | 3,413 |
 | Households before | 153 |
 | Households after | 153 |
+| Households affected | 100 |
 
 - The window is the weather window (2019-01-01 to 2024-02-29) moved back by 1 day(s), because every target day needs the observation from d-1
 

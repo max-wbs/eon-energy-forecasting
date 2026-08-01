@@ -358,7 +358,11 @@ stays NaN and carries a flag.
 | `pv_flag_imputed` | PV status was unknown and was derived from the feed-in evidence | `02_clean/households.parquet` + reserve |
 
 With `PANEL_SLIM` on, only `is_modelable` remains in the panel; the others stay
-available in the stage-2 output or come back with `PANEL_SLIM = False`.
+available in the stage-2 output or come back with `PANEL_SLIM = False`. The
+exception is `weather_day_incomplete`: the weather join carries only the daily
+measurement aggregates, so this flag never enters the panel regardless of the
+switch — recover it from `02_clean/weather_daily.parquet` via (`Weather_ID`,
+`date`).
 
 The gap rows are removed only *after* the features have been built — they
 existed to make shift and rolling correct on a gapless daily grid, and not one
@@ -375,10 +379,12 @@ imputation, the imputer is fitted exclusively on `train`.
 
 ## Next steps
 
-1. `notebooks/01_du_diagnostic.ipynb` — diagnostic data understanding, tying
-   every pipeline rule to a concrete finding in the data
-2. `notebooks/02_du_insights.ipynb` — seasonality, temperature-load curve,
-   visit effect, PV signatures, heterogeneity across households
+1. `notebooks/data_understanding/01_delivered_data.ipynb` and
+   `02_data_quality.ipynb` — data understanding on the delivered files:
+   coverage, gaps and quality on `data/raw/` (zone split per D-23)
+2. `notebooks/data_understanding/03_eda.ipynb` — seasonality,
+   temperature-load curve, visit effect, PV signatures, heterogeneity
+   across households, on the processed panel
 3. Modeling on `panel_train.parquet` / `panel_test.parquet`, or on
    `model_table.parquet` via the `split` column; build the feature list from
    `preselection.features` in the schema, never from `panel.columns`; fit
